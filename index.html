@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUỒNG VUI VẺ 🍳 | Luật Phòng 4 Anh Em</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&amp;family=Comic+Neue:wght@400;700&amp;display=swap');
+        
+        :root {
+            --tw-color-primary: #10b981;
+        }
+        
+        * {
+            transition-property: color, background-color, border-color, text-decoration-color, fill, stroke;
+            transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+            transition-duration: 150ms;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, #10b981 0%, #f59e0b 100%);
+            animation: gradientShift 8s ease infinite;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -2px;
+            left: 0;
+            background-color: #fff;
+            border-radius: 9999px;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+        
+        .rule-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .rule-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 25px 25px 0 -10px #10b981;
+        }
+        
+        .emoji-float {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            z-index: 9999;
+        }
+        
+        .section-header {
+            font-family: 'Comic Neue', cursive;
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white font-sans">
+    <!-- NAVBAR -->
+    <nav class="bg-white/10 backdrop-blur-xl border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-4xl shadow-inner emoji-float">🏠</div>
+                <div>
+                    <h1 class="text-3xl font-bold tracking-tighter section-header">BUỒNG VUI VẺ</h1>
+                    <p class="text-emerald-300 text-xs -mt-1">4 anh em • 1 buồng • siêu vui</p>
+                </div>
+            </div>
+
+            <!-- Menu -->
+            <div class="hidden md:flex items-center gap-8 text-lg font-medium">
+                <a href="#home" class="nav-link">Trang chủ</a>
+                <a href="#thanhvien" class="nav-link">4 Anh Em</a>
+                <a href="#luat" class="nav-link">Luật Buồng</a>
+                <a href="#phat" class="nav-link">Bảng Phạt Vui</a>
+                <a href="#dongy" class="nav-link">Đồng Ý Chưa?</a>
+            </div>
+
+            <!-- Mobile menu button -->
+            <button onclick="toggleMobileMenu()" class="md:hidden w-11 h-11 flex items-center justify-center bg-white/10 rounded-2xl text-3xl">
+                🍔
+            </button>
+
+            <!-- Right side -->
+            <div class="flex items-center gap-4">
+                <div class="hidden sm:flex items-center bg-white/10 text-white text-sm font-medium px-5 h-10 rounded-3xl backdrop-blur-md">
+                    <span class="text-emerald-400">📍</span>
+                    <span class="ml-2">Hanoi • Buồng 2026</span>
+                </div>
+                <button onclick="launchConfetti()" 
+                        class="flex items-center gap-2 bg-white text-emerald-600 hover:bg-amber-400 hover:text-white px-6 h-10 rounded-3xl font-bold text-lg shadow-xl">
+                    <span>🎉</span>
+                    <span>THAM GIA</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-zinc-900 border-t border-white/10 px-6 py-6">
+            <div class="flex flex-col gap-6 text-xl">
+                <a href="#home" onclick="toggleMobileMenu()" class="flex items-center gap-3">🏠 Trang chủ</a>
+                <a href="#thanhvien" onclick="toggleMobileMenu()" class="flex items-center gap-3">👥 4 Anh Em</a>
+                <a href="#luat" onclick="toggleMobileMenu()" class="flex items-center gap-3">📜 Luật Buồng</a>
+                <a href="#phat" onclick="toggleMobileMenu()" class="flex items-center gap-3">💸 Bảng Phạt Vui</a>
+                <a href="#dongy" onclick="toggleMobileMenu()" class="flex items-center gap-3">✅ Đồng Ý Chưa?</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="home" class="hero-bg min-h-screen flex items-center relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-12 items-center">
+            <div class="space-y-8">
+                <div class="inline-flex items-center gap-2 bg-white/20 backdrop-blur-md text-white text-sm font-bold px-6 py-2 rounded-3xl">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+                    </span>
+                    BUỒNG ĐANG HOẠT ĐỘNG • 4/4 NGƯỜI
+                </div>
+                
+                <h1 class="text-7xl md:text-8xl font-bold leading-none tracking-tighter section-header">
+                    LUẬT PHÒNG<br>
+                    <span class="text-white drop-shadow-xl">VUI NHỘN NHẤT HÀ NỘI</span>
+                </h1>
+                
+                <p class="text-2xl md:text-3xl text-white/90 font-light max-w-lg">
+                    4 anh em sống chung • Không drama • Chỉ có tiếng cười + quy tắc siêu dễ thương 🍳🧹🎉
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <button onclick="document.getElementById('luat').scrollIntoView({ behavior: 'smooth' })"
+                            class="flex-1 md:flex-none bg-white text-emerald-700 hover:bg-amber-300 hover:text-emerald-900 font-bold text-2xl px-10 py-6 rounded-3xl flex items-center justify-center gap-3 shadow-2xl">
+                        📜 XEM TOÀN BỘ LUẬT NGAY
+                        <span class="text-4xl">👉</span>
+                    </button>
+                    
+                    <button onclick="launchConfetti(); setTimeout(() => document.getElementById('dongy').scrollIntoView({ behavior: 'smooth' }), 800)"
+                            class="flex-1 md:flex-none border-4 border-white hover:bg-white/10 font-bold text-2xl px-10 py-6 rounded-3xl flex items-center justify-center gap-3">
+                        TÔI ĐỒNG Ý RỒI! 🎊
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-8 text-sm">
+                    <div class="flex -space-x-6">
+                        <div class="w-8 h-8 bg-emerald-300 rounded-2xl flex items-center justify-center text-xl ring-4 ring-emerald-600">🍳</div>
+                        <div class="w-8 h-8 bg-amber-300 rounded-2xl flex items-center justify-center text-xl ring-4 ring-emerald-600">🧹</div>
+                        <div class="w-8 h-8 bg-violet-300 rounded-2xl flex items-center justify-center text-xl ring-4 ring-emerald-600">🛌</div>
+                        <div class="w-8 h-8 bg-rose-300 rounded-2xl flex items-center justify-center text-xl ring-4 ring-emerald-600">🚬</div>
+                    </div>
+                    <p class="text-white/80">Đã có <span class="font-bold text-white">4 anh em</span> đang sống theo luật này</p>
+                    <div class="text-4xl">🔥</div>
+                </div>
+            </div>
+            
+            <!-- Hero visual -->
+            <div class="relative hidden md:flex justify-center">
+                <div class="relative w-96 h-96">
+                    <!-- Floating circle -->
+                    <div class="absolute inset-0 bg-white/10 backdrop-blur-3xl rounded-[4rem] rotate-12 shadow-2xl flex items-center justify-center text-[180px] border-8 border-white/30">
+                        🏠
+                    </div>
+                    
+                    <!-- Smaller orbiting emojis -->
+                    <div class="absolute top-8 left-8 text-7xl animate-[spin_12s_linear_infinite] emoji-float">🍳</div>
+                    <div class="absolute top-12 right-12 text-7xl animate-[spin_15s_linear_infinite_reverse] emoji-float">🧹</div>
+                    <div class="absolute bottom-12 left-12 text-7xl animate-[spin_10s_linear_infinite] emoji-float">🛌</div>
+                    <div class="absolute bottom-8 right-8 text-7xl animate-[spin_18s_linear_infinite_reverse] emoji-float">🎉</div>
+                    
+                    <div class="absolute -bottom-6 -right-6 bg-white text-emerald-600 text-2xl font-bold px-8 py-3 rounded-3xl shadow-2xl flex items-center gap-3">
+                        <span>4 người</span>
+                        <div class="flex gap-1">
+                            <div class="w-5 h-5 bg-emerald-500 rounded-full"></div>
+                            <div class="w-5 h-5 bg-amber-500 rounded-full"></div>
+                            <div class="w-5 h-5 bg-violet-500 rounded-full"></div>
+                            <div class="w-5 h-5 bg-rose-500 rounded-full"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scroll indicator -->
+        <div class="absolute bottom-10 left-1/2 flex flex-col items-center gap-2 text-white/60">
+            <p class="text-sm font-medium tracking-widest">CUỘN XUỐNG ĐỂ XEM LUẬT</p>
+            <div class="w-6 h-10 border-2 border-white/60 rounded-3xl flex justify-center">
+                <div class="w-1 h-3 bg-white/60 rounded-full mt-2 animate-bounce"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- THÀNH VIÊN -->
+    <section id="thanhvien" class="max-w-7xl mx-auto px-6 py-20">
+        <div class="text-center mb-16">
+            <span class="px-6 py-2 bg-emerald-100 text-emerald-700 rounded-3xl text-lg font-bold">GẶP GỠ 4 ANH EM BUỒNG</span>
+            <h2 class="text-6xl font-bold mt-4 section-header">4 chàng trai • 1 buồng • Vui như tết!</h2>
+            <p class="mt-4 text-xl text-zinc-400 max-w-md mx-auto">Mỗi người một tính cách, cùng nhau giữ luật để buồng lúc nào cũng sạch + vui + chill</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <!-- Member 1 -->
+            <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 text-center hover:bg-white/10 border border-transparent hover:border-emerald-400 group">
+                <div class="mx-auto w-28 h-28 bg-gradient-to-br from-emerald-400 to-cyan-400 rounded-3xl flex items-center justify-center text-7xl mb-6 shadow-inner group-hover:rotate-12">🍳</div>
+                <h3 class="text-3xl font-bold mb-1">Anh Bếp Xoay</h3>
+                <p class="text-emerald-300">Siêu đầu bếp • Nấu tối ngon • Luôn rửa bát trong 10 phút</p>
+                <div class="mt-8 text-xs uppercase tracking-widest bg-emerald-400/20 text-emerald-400 w-fit mx-auto px-4 py-1 rounded-3xl">Nấu ăn ngày thứ 2</div>
+            </div>
+            
+            <!-- Member 2 -->
+            <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 text-center hover:bg-white/10 border border-transparent hover:border-amber-400 group">
+                <div class="mx-auto w-28 h-28 bg-gradient-to-br from-amber-400 to-orange-400 rounded-3xl flex items-center justify-center text-7xl mb-6 shadow-inner group-hover:rotate-12">🧹</div>
+                <h3 class="text-3xl font-bold mb-1">Ông Vệ Sinh</h3>
+                <p class="text-amber-300">Pro dọn dẹp • Quét nhà + lau bếp + dọn WC • Luôn sạch bong</p>
+                <div class="mt-8 text-xs uppercase tracking-widest bg-amber-400/20 text-amber-400 w-fit mx-auto px-4 py-1 rounded-3xl">Vệ sinh ngày thứ 4</div>
+            </div>
+            
+            <!-- Member 3 -->
+            <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 text-center hover:bg-white/10 border border-transparent hover:border-violet-400 group">
+                <div class="mx-auto w-28 h-28 bg-gradient-to-br from-violet-400 to-purple-400 rounded-3xl flex items-center justify-center text-7xl mb-6 shadow-inner group-hover:rotate-12">🚬</div>
+                <h3 class="text-3xl font-bold mb-1">Anh Thuốc Làng</h3>
+                <p class="text-violet-300">Hút thuốc có văn minh • Không khói vào phòng • Tàn thuốc gọn gàng</p>
+                <div class="mt-8 text-xs uppercase tracking-widest bg-violet-400/20 text-violet-400 w-fit mx-auto px-4 py-1 rounded-3xl">Free style thứ 6</div>
+            </div>
+            
+            <!-- Member 4 -->
+            <div class="bg-white/5 backdrop-blur-xl rounded-3xl p-8 text-center hover:bg-white/10 border border-transparent hover:border-rose-400 group">
+                <div class="mx-auto w-28 h-28 bg-gradient-to-br from-rose-400 to-pink-400 rounded-3xl flex items-center justify-center text-7xl mb-6 shadow-inner group-hover:rotate-12">🛌</div>
+                <h3 class="text-3xl font-bold mb-1">Master Giường</h3>
+                <p class="text-rose-300">Không dẫm giường • Không đồ lên gối • Ngủ đúng giờ • Chill max</p>
+                <div class="mt-8 text-xs uppercase tracking-widest bg-rose-400/20 text-rose-400 w-fit mx-auto px-4 py-1 rounded-3xl">Ngủ trước 12h</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LUẬT PHÒNG -->
+    <section id="luat" class="bg-white/5 py-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <span class="px-6 py-2 bg-amber-400 text-emerald-900 rounded-3xl text-lg font-bold">📜 DANH SÁCH LUẬT BUỒNG</span>
+                <h2 class="text-6xl font-bold mt-4 section-header">10 luật vui • Không khô khan • Chỉ để buồng vui hơn!</h2>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Rule 1 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">🍲</div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="text-3xl font-bold">01 • Nấu Ăn Bữa Tối</h3>
+                                <span class="text-4xl">🔥</span>
+                            </div>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Chỉ nấu <strong>bữa tối chung</strong>. Sáng &amp; trưa tự túc.<br>
+                                Mỗi người nấu 1 ngày theo lịch xoay vòng.<br>
+                                Nấu xong • Ăn xong • <strong>Rửa bát trong 10 phút</strong>
+                            </p>
+                            <div class="mt-6 inline-flex items-center gap-2 bg-emerald-400/20 text-emerald-400 px-4 py-2 rounded-2xl text-sm font-medium">
+                                ⏰ Nhắc nhở = phạt vui (xem bảng phạt)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 2 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">🧼</div>
+                        <div class="flex-1">
+                            <div class="flex justify-between">
+                                <h3 class="text-3xl font-bold">02 • Vệ Sinh Phòng</h3>
+                                <span class="text-4xl">🧹</span>
+                            </div>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Người nấu hôm đó <strong>phải vệ sinh toàn bộ buồng</strong>:<br>
+                                Quét phòng • Quét &amp; thu gọn ban công • Lau bếp • Vứt rác • 
+                                Dọn nước điều hòa • Dọn nhà vệ sinh • Lau sàn...
+                            </p>
+                            <div class="mt-6 inline-flex items-center gap-2 bg-emerald-400/20 text-emerald-400 px-4 py-2 rounded-2xl text-sm font-medium">
+                                📆 Phạt giống luật nấu ăn
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 3 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">🚬</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">03 • Hút Thuốc Văn Minh</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Hút thoải mái nhưng <strong>không làm phiền ai</strong>.<br>
+                                • Không để tàn thuốc rơi lung tung<br>
+                                • Không để khói bay vào phòng<br>
+                                • Không vứt đầu lọc bừa bãi
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 4 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">🛏️</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">04 • Giường Ngủ Thiêng Liêng</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                • <strong>Không dẫm lên giường</strong><br>
+                                • <strong>Không đặt đồ lên gối</strong><br>
+                                Giường là nơi nghỉ ngơi, không phải chỗ để đồ!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 5 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">🌙</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">05 • Giờ Giấc Ngủ</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                <strong>Ngày thường (tối CN → tối T5)</strong>:<br>
+                                Tắt đèn • Tắt điện thoại • Không nói chuyện • Ngủ trước 12h đêm<br><br>
+                                Thứ 6 • Thứ 7 • Chủ nhật: <strong>Free style</strong> 🎉
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 6 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">📢</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">06 • Báo Trước Khi Bận</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Đi làm / đi chơi / bận việc chung?<br>
+                                <strong>Báo trước ít nhất 4 tiếng</strong> cho cả buồng<br>
+                                (Ví dụ: hôm nay đến lượt nấu cơm / dọn nhà)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 7 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">👕</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">07 • Sống Sạch Sẽ</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Quần áo đi làm/học về phải <strong>gọn gàng ngăn nắp</strong>.<br>
+                                Không vất lung tung lên giường hay sàn nhà.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 8 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">📅</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">08 • Sinh Hoạt Buồng</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Mỗi tháng họp buồng <strong>1 lần</strong><br>
+                                Cùng nhau ăn uống • Nói chuyện • Cập nhật luật mới • Chill
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 9 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">🔨</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">09 • Làm Việc Riêng</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Làm việc, học, chơi game thoải mái<br>
+                                Nhưng <strong>không làm ồn ào ảnh hưởng người khác</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Rule 10 -->
+                <div class="rule-card bg-white/10 backdrop-blur-xl border border-white/10 rounded-3xl p-8 col-span-1 md:col-span-2 lg:col-span-1">
+                    <div class="flex items-start gap-4">
+                        <div class="text-6xl">👥</div>
+                        <div class="flex-1">
+                            <h3 class="text-3xl font-bold">10 • Dẫn Khách Về</h3>
+                            <p class="mt-4 text-lg leading-relaxed">
+                                Muốn dẫn bạn gái / bạn trai / bạn bè về buồng?<br>
+                                <strong>Phải hỏi ý kiến cả buồng trước</strong><br>
+                                (Đừng để anh em bất ngờ nha 😂)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BẢNG PHẠT VUI -->
+    <section id="phat" class="max-w-7xl mx-auto px-6 py-20 bg-gradient-to-b from-transparent via-emerald-900/30 to-transparent">
+        <div class="max-w-2xl mx-auto bg-white/10 backdrop-blur-3xl rounded-3xl p-10 border border-emerald-400/30">
+            <div class="text-center mb-10">
+                <h2 class="text-5xl font-bold section-header flex items-center justify-center gap-4">
+                    💸 BẢNG PHẠT VUI 💸
+                </h2>
+                <p class="text-amber-300 text-xl">Nhắc nhở = góp vui vào quỹ buồng</p>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-8 mb-12">
+                <div class="text-center">
+                    <div class="text-6xl mb-4">1️⃣</div>
+                    <p class="font-bold text-3xl text-emerald-400">20.000đ</p>
+                    <p class="text-sm text-zinc-400">Lần nhắc đầu tiên</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl mb-4">2️⃣</div>
+                    <p class="font-bold text-3xl text-amber-400">50.000đ</p>
+                    <p class="text-sm text-zinc-400">Lần nhắc thứ hai</p>
+                </div>
+                <div class="text-center">
+                    <div class="text-6xl mb-4">3️⃣</div>
+                    <p class="font-bold text-3xl text-red-400">100.000đ</p>
+                    <p class="text-sm text-zinc-400">Lần nhắc thứ ba</p>
+                </div>
+                <div class="text-center bg-white/10 rounded-3xl p-6">
+                    <div class="text-6xl mb-4">4️⃣+</div>
+                    <p class="font-bold text-3xl">GẤP ĐÔI</p>
+                    <p class="text-sm text-zinc-400">Mỗi lần nhắc sau đó</p>
+                    <p class="text-xs mt-6 text-emerald-400">Ví dụ lần 4 = 200k • lần 5 = 400k • ...</p>
+                </div>
+            </div>
+            
+            <!-- Penalty Calculator -->
+            <div class="bg-white/10 rounded-3xl p-8">
+                <h3 class="font-bold text-xl mb-6 text-center">🔢 TÍNH PHẠT NHANH</h3>
+                <div class="flex gap-6 items-end">
+                    <div class="flex-1">
+                        <label class="block text-sm mb-2 text-zinc-400">Bạn bị nhắc nhở lần thứ</label>
+                        <input id="reminderCount" type="number" min="1" value="1" 
+                               class="w-full bg-white/10 text-4xl font-mono text-center rounded-2xl h-16 focus:outline-none focus:ring-4 focus:ring-emerald-400">
+                    </div>
+                    <button onclick="calculatePenalty()" 
+                            class="bg-emerald-500 hover:bg-emerald-600 text-white px-12 py-5 rounded-3xl text-2xl font-bold shadow-xl">
+                        TÍNH TIỀN
+                    </button>
+                </div>
+                <div id="result" class="mt-8 text-center text-5xl font-bold hidden"></div>
+            </div>
+            
+            <p class="text-center text-xs text-zinc-400 mt-8">Tiền phạt sẽ dùng mua đồ ăn vặt, bia, hoặc tổ chức sinh hoạt buồng 🎉</p>
+        </div>
+    </section>
+
+    <!-- ĐỒNG Ý SECTION -->
+    <section id="dongy" class="py-20 bg-white text-emerald-950">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-6xl font-bold section-header mb-6">Sẵn sàng sống theo luật buồng vui chưa?</h2>
+            <p class="text-3xl mb-12">Nhấn nút bên dưới để ký ảo + nhận confetti chúc mừng!</p>
+            
+            <button onclick="signAgreement()" 
+                    class="mx-auto flex items-center gap-6 bg-emerald-600 hover:bg-amber-400 text-white hover:text-emerald-900 text-5xl font-bold px-16 py-10 rounded-3xl shadow-[0_0_60px_-10px] shadow-emerald-500">
+                <span>TÔI ĐỒNG Ý TUÂN THỦ LUẬT BUỒNG!</span>
+                <span class="text-7xl">✍️</span>
+            </button>
+            
+            <div class="mt-12 text-sm flex items-center justify-center gap-8">
+                <div class="flex items-center gap-2">
+                    <span class="text-4xl">🍳</span>
+                    <span class="font-medium">Nấu ăn đúng giờ</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-4xl">🧹</span>
+                    <span class="font-medium">Vệ sinh sạch sẽ</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-4xl">🌙</span>
+                    <span class="font-medium">Ngủ ngon</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="text-4xl">🎉</span>
+                    <span class="font-medium">Vui vẻ mãi mãi</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-zinc-900 py-12 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6 text-center text-zinc-400">
+            <p class="text-xl">Buồng Vui Vẻ © 2026 • Được tạo bằng ❤️ chỉ để 4 anh em sống chung thật chill</p>
+            <p class="mt-3 text-sm">HTML + CSS + JS • Modern • Vui vẻ • Không drama</p>
+            <div class="flex justify-center gap-8 mt-8 text-3xl">
+                🍳 &nbsp; 🧹 &nbsp; 🛌 &nbsp; 🚬 &nbsp; 🎉
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Tailwind script initialization
+        function initializeTailwind() {
+            return {
+                config(userConfig = {}) {
+                    return {
+                        configUser: {
+                            ...userConfig,
+                        },
+                        theme: {
+                            extend: {
+                                colors: {
+                                    primary: '#10b981'
+                                }
+                            }
+                        }
+                    }
+                },
+                theme: {
+                    extend: {}
+                }
+            }
+        }
+        
+        // Main Tailwind setup
+        document.addEventListener('DOMContentLoaded', () => {
+            const config = initializeTailwind().config()
+            return {
+                configUser: config.configUser,
+                theme: config.theme
+            }
+        })
+        
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu')
+            menu.classList.toggle('hidden')
+        }
+        
+        // Penalty calculator
+        function calculatePenalty() {
+            const countInput = parseInt(document.getElementById('reminderCount').value)
+            const resultDiv = document.getElementById('result')
+            
+            if (!countInput || countInput < 1) {
+                resultDiv.classList.add('hidden')
+                return
+            }
+            
+            let amount = 0
+            
+            if (countInput === 1) amount = 20000
+            else if (countInput === 2) amount = 50000
+            else if (countInput === 3) amount = 100000
+            else {
+                // Sau lần 3 thì gấp đôi mỗi lần
+                amount = 100000 * Math.pow(2, countInput - 3)
+            }
+            
+            resultDiv.innerHTML = `
+                <span class="text-emerald-400">Lần thứ ${countInput}:</span><br>
+                <span class="text-7xl font-bold">${amount.toLocaleString('vi-VN')}đ</span>
+                <p class="text-sm mt-4 text-zinc-300">💰 Chúc mừng bạn góp vui cho quỹ buồng!</p>
+            `
+            resultDiv.classList.remove('hidden')
+            
+            // Mini confetti when calculate
+            if (countInput >= 3) {
+                launchSmallConfetti()
+            }
+        }
+        
+        // Confetti function
+        function launchConfetti() {
+            const colors = ['#10b981', '#f59e0b', '#a78bfa', '#ec4899', '#22d3ee']
+            const duration = 3500
+            
+            const end = Date.now() + duration
+            
+            const frame = () => {
+                const leftConfetti = Math.random() * 40 + 20
+                const rightConfetti = Math.random() * 40 + 20
+                
+                confetti({
+                    particleCount: leftConfetti,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                })
+                
+                confetti({
+                    particleCount: rightConfetti,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                })
+                
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame)
+                }
+            }
+            
+            frame()
+            
+            // Toast message
+            const toast = document.createElement('div')
+            toast.style.cssText = 'position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:#10b981; color:white; padding:16px 32px; border-radius:9999px; box-shadow:0 25px 50px -12px rgb(16 185 129); font-weight:700; z-index:99999;'
+            toast.textContent = '🎉 Chúc mừng bạn đã chính thức vào buồng vui vẻ!'
+            document.body.appendChild(toast)
+            
+            setTimeout(() => toast.remove(), 2800)
+        }
+        
+        // Small confetti for calculator
+        function launchSmallConfetti() {
+            const colors = ['#10b981', '#f59e0b']
+            confetti({
+                particleCount: 80,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: colors
+            })
+        }
+        
+        // Fake confetti library (embedded)
+        function confetti(options) {
+            const defaults = {
+                particleCount: 50,
+                angle: 90,
+                spread: 45,
+                startVelocity: 45,
+                decay: 0.9,
+                gravity: 1,
+                colors: ['#10b981', '#f59e0b', '#a78bfa'],
+                origin: { x: 0.5, y: 0.5 }
+            }
+            
+            const config = { ...defaults, ...options }
+            
+            for (let i = 0; i < config.particleCount; i++) {
+                const particle = document.createElement('div')
+                particle.className = 'confetti'
+                particle.style.left = `${Math.random() * 100}vw`
+                particle.style.top = `${config.origin.y * 100}vh`
+                particle.style.backgroundColor = config.colors[Math.floor(Math.random() * config.colors.length)]
+                particle.style.transform = `rotate(${Math.random() * 360}deg)`
+                particle.style.opacity = Math.random()
+                document.body.appendChild(particle)
+                
+                const angle = (config.angle - config.spread / 2) + Math.random() * config.spread
+                const velocity = config.startVelocity + Math.random() * 20
+                const xVel = Math.cos(angle * Math.PI / 180) * velocity
+                const yVel = Math.sin(angle * Math.PI / 180) * velocity
+                
+                let x = 0
+                let y = 0
+                let rotation = Math.random() * 800
+                
+                const animateParticle = () => {
+                    x += xVel
+                    y += yVel + config.gravity * 2
+                    
+                    rotation += 8
+                    
+                    yVel += config.gravity
+                    
+                    particle.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`
+                    particle.style.opacity = 1 - (y / window.innerHeight)
+                    
+                    if (y < window.innerHeight) {
+                        requestAnimationFrame(animateParticle)
+                    } else {
+                        particle.remove()
+                    }
+                }
+                
+                animateParticle()
+            }
+        }
+        
+        // Agreement signature
+        function signAgreement() {
+            launchConfetti()
+            
+            const message = document.createElement('div')
+            message.innerHTML = `
+                <div class="fixed inset-0 bg-black/70 flex items-center justify-center z-[99999]">
+                    <div class="bg-white text-emerald-900 max-w-lg w-11/12 rounded-3xl p-10 text-center">
+                        <div class="text-8xl mb-6">🎉✍️🎉</div>
+                        <h2 class="text-5xl font-bold mb-4">Ký thành công!</h2>
+                        <p class="text-2xl">Bạn đã chính thức trở thành thành viên Buồng Vui Vẻ 🍳</p>
+                        <p class="mt-8 text-xl">Từ nay buồng sẽ luôn sạch, vui và không drama!</p>
+                        <button onclick="this.closest('.fixed').remove()" 
+                                class="mt-12 bg-emerald-600 text-white px-12 py-4 text-xl font-bold rounded-3xl">VỀ BUỒNG NHÉ!</button>
+                    </div>
+                </div>
+            `
+            document.body.appendChild(message.firstElementChild)
+            
+            // After 4 seconds auto remove if not clicked
+            setTimeout(() => {
+                const modal = document.querySelector('.fixed')
+                if (modal) modal.remove()
+            }, 4500)
+        }
+        
+        console.log('%c✅ Buồng Vui Vẻ Landing Page đã sẵn sàng! Copy toàn bộ code này thành file .html và mở ngay nhé!', 'color:#10b981; font-size:18px; font-weight:bold')
+    </script>
+</body>
+</html>

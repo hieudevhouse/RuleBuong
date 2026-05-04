@@ -174,6 +174,8 @@
     </div>
 </div>
 
+<div id="debts-section" class="hidden space-y-10">
+
 <!-- Approval Queue -->
 <% if (pendingApprovals && pendingApprovals.length> 0) { %>
     <div class="glass-card border-amber-500 bg-amber-500/10 shadow-[0_0_30px_rgba(245,158,11,0.15)] overflow-hidden">
@@ -341,8 +343,8 @@
                                     </span>
                                 </div>
                                 <p class="text-white font-black mb-1">
-                                    <%= debt.debtorId._id.toString()===user._id.toString() ? 'Bạn đã trả cho' :
-                                        debt.debtorId.fullName + ' đã trả cho bạn' %>
+                                    <%= (debt.debtorId && user._id) && debt.debtorId._id.toString()===user._id.toString() ? 'Bạn đã trả cho' :
+                                        (debt.debtorId ? debt.debtorId.fullName : 'N/A') + ' đã trả cho bạn' %>
                                 </p>
                                 <p class="text-xs text-zinc-400 mb-4">
                                     <%= debt.description %>
@@ -363,6 +365,7 @@
                 </div>
             </div>
             <% } %>
+</div>
                 </div>
 
                 <!-- Payment Modal -->
@@ -458,6 +461,7 @@
                         }
                     }
                 </script>
+            </div>
                 </div>
 
                 <!-- Debt Creation Modal -->

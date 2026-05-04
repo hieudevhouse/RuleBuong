@@ -229,7 +229,14 @@ exports.getRulesPage = async (req, res) => {
 exports.getPurchasesPage = async (req, res) => {
     try {
         const user = req.user;
-        const sharedPurchases = await SharedPurchase.find()
+        const { category } = req.query;
+        
+        let query = {};
+        if (category && category !== 'All') {
+            query.category = category;
+        }
+
+        const sharedPurchases = await SharedPurchase.find(query)
             .populate('userId', 'fullName avatar')
             .sort({ createdAt: -1 });
 
@@ -237,6 +244,7 @@ exports.getPurchasesPage = async (req, res) => {
             title: 'Mua đồ chung - Pencake',
             user,
             sharedPurchases,
+            currentCategory: category || 'All',
             moment
         });
     } catch (err) {
@@ -247,12 +255,20 @@ exports.getPurchasesPage = async (req, res) => {
 
 exports.createSharedPurchase = async (req, res) => {
     try {
-        const { productName, amount } = req.body;
+        let { category, productName, amount, customProduct } = req.body;
         const imageUrl = req.file ? req.file.path : null;
+
+        // Nếu chọn Khác thì lấy giá trị từ input text
+        if (category === 'Khác' && customProduct) {
+            productName = customProduct;
+        } else if (category !== 'Khác') {
+            productName = category; // Gán productName bằng tên category nếu không phải Khác
+        }
 
         await SharedPurchase.create({
             userId: req.user._id,
             productName,
+            category,
             amount: Number(amount),
             image: imageUrl,
             status: 'approved'

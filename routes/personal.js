@@ -12,6 +12,7 @@ router.post('/expenses/create', personalController.createExpense);
 router.post('/expenses/delete/:id', personalController.deleteExpense);
 router.post('/debt/create', personalController.createDebt);
 router.post('/debt/approve/:debtId', personalController.approveDebt);
+router.post('/debt/delete/:debtId', personalController.deleteDebt);
 router.post('/debt/pay/:debtId', upload.single('paymentProof'), personalController.payDebt);
 
 // Profile routes

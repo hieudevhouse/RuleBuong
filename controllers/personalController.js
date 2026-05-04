@@ -116,6 +116,26 @@ exports.approveDebt = async (req, res) => {
     }
 };
 
+exports.deleteDebt = async (req, res) => {
+    try {
+        const { debtId } = req.params;
+        const debt = await Debt.findById(debtId);
+        
+        if (!debt) return res.status(404).send('Debt not found');
+        
+        // Only creditor can delete pending/rejected debts
+        if (debt.creditorId.toString() !== req.user._id.toString()) {
+            return res.status(403).send('Unauthorized');
+        }
+
+        await Debt.findByIdAndDelete(debtId);
+        res.redirect('/personal/expenses');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Error deleting debt');
+    }
+};
+
 exports.getExpenses = async (req, res) => {
     try {
         const user = req.user;
@@ -124,8 +144,10 @@ exports.getExpenses = async (req, res) => {
         // Debts and Receivables
         const myDebts = await Debt.find({ debtorId: user._id, status: 'approved' })
             .populate('creditorId', 'fullName qrCode');
-        const othersOweMe = await Debt.find({ creditorId: user._id, status: 'approved' })
-            .populate('debtorId', 'fullName');
+        const othersOweMe = await Debt.find({ 
+            creditorId: user._id, 
+            status: { $in: ['pending', 'approved', 'rejected'] } 
+        }).populate('debtorId', 'fullName').sort({ createdAt: -1 });
         
         // Pending approval requests (Current user is the debtor, needs to approve)
         const pendingApprovals = await Debt.find({ debtorId: user._id, status: 'pending' })

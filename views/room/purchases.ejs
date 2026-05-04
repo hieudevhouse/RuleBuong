@@ -37,6 +37,30 @@
     </div>
 </div>
 
+<!-- Filters -->
+<div class="flex flex-wrap gap-3 mb-10">
+    <a href="/room/purchases?category=All" 
+        class="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all <%= currentCategory === 'All' ? 'bg-gold-500 text-obsidian-500 shadow-lg shadow-gold-500/20' : 'bg-white/5 text-zinc-400 hover:bg-white/10' %>">
+        Tất cả
+    </a>
+    <a href="/room/purchases?category=Dầu gội đầu" 
+        class="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all <%= currentCategory === 'Dầu gội đầu' ? 'bg-gold-500 text-obsidian-500 shadow-lg shadow-gold-500/20' : 'bg-white/5 text-zinc-400 hover:bg-white/10' %>">
+        Dầu gội đầu
+    </a>
+    <a href="/room/purchases?category=Nước rửa bát" 
+        class="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all <%= currentCategory === 'Nước rửa bát' ? 'bg-gold-500 text-obsidian-500 shadow-lg shadow-gold-500/20' : 'bg-white/5 text-zinc-400 hover:bg-white/10' %>">
+        Nước rửa bát
+    </a>
+    <a href="/room/purchases?category=Bột giặt" 
+        class="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all <%= currentCategory === 'Bột giặt' ? 'bg-gold-500 text-obsidian-500 shadow-lg shadow-gold-500/20' : 'bg-white/5 text-zinc-400 hover:bg-white/10' %>">
+        Bột giặt
+    </a>
+    <a href="/room/purchases?category=Khác" 
+        class="px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all <%= currentCategory === 'Khác' ? 'bg-gold-500 text-obsidian-500 shadow-lg shadow-gold-500/20' : 'bg-white/5 text-zinc-400 hover:bg-white/10' %>">
+        Khác
+    </a>
+</div>
+
 <!-- Purchases Grid -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
     <% if (sharedPurchases && sharedPurchases.length> 0) { %>
@@ -77,6 +101,11 @@
                                 <%= item.userId.fullName %>
                             </p>
                         </div>
+                    </div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="px-3 py-1 bg-gold-500/10 text-gold-500 text-[9px] font-black uppercase rounded-lg border border-gold-500/20">
+                            <%= item.category || 'Khác' %>
+                        </span>
                     </div>
                     <h4 class="text-xl font-black text-white mb-4 line-clamp-2 min-h-[3.5rem]">
                         <%= item.productName %>
@@ -123,7 +152,21 @@
             <div class="space-y-4">
                 <label class="block text-[11px] font-black text-zinc-300 uppercase tracking-[0.2em]">Sản phẩm/Đồ dùng đã
                     mua</label>
-                <input type="text" name="productName" placeholder="Ví dụ: Thùng nước lọc, Gói xà phòng OMO..." required
+                <div class="relative">
+                    <select name="category" id="productCategory" required onchange="handleProductChange(this)"
+                        class="w-full bg-obsidian-300 border border-white/5 rounded-2xl px-8 py-5 text-white font-black focus:outline-none focus:border-gold-500/50 transition-all appearance-none text-lg">
+                        <option value="Dầu gội đầu">Dầu gội đầu</option>
+                        <option value="Nước rửa bát">Nước rửa bát</option>
+                        <option value="Bột giặt">Bột giặt</option>
+                        <option value="Khác">Khác...</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down absolute right-8 top-1/2 -translate-y-1/2 text-gold-500 pointer-events-none"></i>
+                </div>
+            </div>
+
+            <div id="customProductGroup" class="space-y-4 hidden animate-in slide-in-from-top duration-300">
+                <label class="block text-[11px] font-black text-zinc-300 uppercase tracking-[0.2em]">Tên sản phẩm khác</label>
+                <input type="text" name="customProduct" id="customProductInput" placeholder="Nhập tên sản phẩm..."
                     class="w-full bg-obsidian-300 border border-white/5 rounded-2xl px-8 py-5 text-white font-black focus:outline-none focus:border-gold-500/50 transition-all placeholder:text-zinc-700 text-lg">
             </div>
             <div class="space-y-4">
@@ -187,6 +230,20 @@
                 iconArea.innerHTML = '<i class="fa-solid fa-check text-2xl"></i>';
             };
             reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function handleProductChange(select) {
+        const customGroup = document.getElementById('customProductGroup');
+        const customInput = document.getElementById('customProductInput');
+        
+        if (select.value === 'Khác') {
+            customGroup.classList.remove('hidden');
+            customInput.required = true;
+            customInput.focus();
+        } else {
+            customGroup.classList.add('hidden');
+            customInput.required = false;
         }
     }
 </script>

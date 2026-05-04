@@ -42,6 +42,7 @@ const dutyScheduleSchema = new mongoose.Schema({
 const sharedPurchaseSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     productName: { type: String, required: true },
+    category: { type: String, enum: ['Dầu gội đầu', 'Nước rửa bát', 'Bột giặt', 'Khác'], default: 'Khác' },
     amount: { type: Number, required: true },
     image: { type: String }, // URL ảnh minh họa hoặc hóa đơn
     date: { type: Date, default: Date.now },

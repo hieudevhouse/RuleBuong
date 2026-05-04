@@ -109,7 +109,7 @@
         /* ── Summary Cards ── */
         .db-cards {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 1.5rem;
             margin-bottom: 3rem;
         }
@@ -455,13 +455,6 @@
                     <%= user.fullName %>
                 </span>. Hôm nay bạn thế nào?</p>
         </div>
-        <div class="db-header-actions">
-            <button class="db-btn-ghost">
-            </button>
-            <button class="db-btn-gold">
-                <i class="fa-solid fa-coins"></i> Ghi chi tiêu
-            </button>
-        </div>
     </div>
 
     <!-- ═══════════════════════════════════════
@@ -481,36 +474,6 @@
                 <%= stats.todayTasks %>
             </div>
             <div class="db-card-label">Việc cần làm</div>
-        </a>
-
-        <!-- Chi tiêu -->
-        <a href="/personal/expenses" class="db-card"
-            style="--card-accent: #F59E0B; --card-accent-soft: rgba(245, 158, 11, 0.08); --card-accent-border: rgba(245, 158, 11, 0.2);">
-            <div class="db-card-top">
-                <div class="db-card-icon" style="color: #F59E0B; background: rgba(245, 158, 11, 0.05);">
-                    <i class="fa-solid fa-wallet"></i>
-                </div>
-                <span class="db-card-badge">Tháng này</span>
-            </div>
-            <div class="db-card-value">
-                <%= stats.monthlyExpense.toLocaleString('vi-VN') %><span class="unit">đ</span>
-            </div>
-            <div class="db-card-label">Chi tiêu cá nhân</div>
-        </a>
-
-        <!-- Nợ -->
-        <a href="/personal/expenses?type=debt" class="db-card"
-            style="--card-accent: #F43F5E; --card-accent-soft: rgba(244, 63, 94, 0.08); --card-accent-border: rgba(244, 63, 94, 0.2);">
-            <div class="db-card-top">
-                <div class="db-card-icon" style="color: #F43F5E; background: rgba(244, 63, 94, 0.05);">
-                    <i class="fa-solid fa-hand-holding-dollar"></i>
-                </div>
-                <span class="db-card-badge">Cần trả</span>
-            </div>
-            <div class="db-card-value">
-                <%= stats.debt.toLocaleString('vi-VN') %><span class="unit">đ</span>
-            </div>
-            <div class="db-card-label">Bạn đang nợ</div>
         </a>
 
         <!-- Thu -->
@@ -549,9 +512,7 @@
             <!-- Form -->
             <div class="db-notes-form-col">
                 <form id="noteForm" action="/personal/note/create" method="POST">
-                    <textarea class="db-textarea" name="content" id="noteContent" rows="7"
-                        placeholder="Hôm nay bạn thế nào? Cần ghi nhớ điều gì không...">
-        </textarea>
+                    <textarea class="db-textarea" name="content" id="noteContent" rows="7" placeholder="Hôm nay bạn thế nào? Cần ghi nhớ điều gì không..."></textarea>
                     <button class="db-submit-btn" type="submit" id="noteSubmitBtn">
                         <span class="btn-text"><i class="fa-solid fa-pen-nib"></i> Lưu nhật ký</span>
                         <div class="db-spinner" id="noteSpinner"></div>

@@ -196,18 +196,35 @@ exports.getExpenses = async (req, res) => {
 exports.payDebt = async (req, res) => {
     try {
         const { debtId } = req.params;
-        const updateData = { status: 'completed' };
-
-        if (req.file) {
-            updateData.paymentProof = req.file.path;
-        }
-
+        const { paymentType, partialAmount } = req.body;
+        
         const debt = await Debt.findOne({ _id: debtId, debtorId: req.user._id });
         if (!debt) {
             return res.status(404).send('Không tìm thấy khoản nợ');
         }
 
-        await Debt.findByIdAndUpdate(debtId, updateData);
+        if (paymentType === 'partial') {
+            const amountToPay = Number(partialAmount);
+            if (amountToPay > 0 && amountToPay < debt.amount) {
+                debt.amount -= amountToPay;
+                // Lưu lại minh chứng thanh toán mới nhất nếu có
+                if (req.file) {
+                    debt.paymentProof = req.file.path;
+                }
+                // Cập nhật mô tả để theo dõi
+                const timestamp = moment().format('DD/MM');
+                debt.description += ` [Đã trả ${amountToPay.toLocaleString('vi-VN')}đ ngày ${timestamp}]`;
+                await debt.save();
+            }
+        } else {
+            // Trả hết
+            debt.status = 'completed';
+            if (req.file) {
+                debt.paymentProof = req.file.path;
+            }
+            await debt.save();
+        }
+
         res.redirect('/personal/expenses');
     } catch (err) {
         console.error(err);

@@ -419,8 +419,33 @@
                                 <h4 class="text-3xl font-black text-white" id="paymentAmountDisplay">0 đ</h4>
                             </div>
 
-                            <div>
-                                <label class="block text-xs font-black text-zinc-400 mb-3 uppercase tracking-widest">Tải
+                            <div class="space-y-4">
+                                <label class="block text-xs font-black text-zinc-400 uppercase tracking-widest">Phương thức thanh toán</label>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <label class="relative flex items-center justify-center p-4 bg-zinc-800 rounded-2xl border border-white/5 cursor-pointer group has-[:checked]:border-amber-500 transition-all">
+                                        <input type="radio" name="paymentType" value="full" checked class="hidden" onchange="togglePartialInput(false)">
+                                        <span class="text-sm font-black text-zinc-400 group-has-[:checked]:text-amber-500">TRẢ HẾT</span>
+                                    </label>
+                                    <label class="relative flex items-center justify-center p-4 bg-zinc-800 rounded-2xl border border-white/5 cursor-pointer group has-[:checked]:border-amber-500 transition-all">
+                                        <input type="radio" name="paymentType" value="partial" class="hidden" onchange="togglePartialInput(true)">
+                                        <span class="text-sm font-black text-zinc-400 group-has-[:checked]:text-amber-500">TRẢ MỘT PHẦN</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="partialAmountContainer" class="space-y-4 hidden animate-in slide-in-from-top-2 duration-300">
+                                <label class="block text-xs font-black text-zinc-400 uppercase tracking-widest">Số tiền trả (VNĐ)</label>
+                                <div class="relative">
+                                    <input type="text" id="partialAmountDisplay" placeholder="Nhập số tiền..."
+                                        oninput="formatMoneyInput(this); validatePartialAmount(this)"
+                                        class="w-full bg-zinc-800 border border-white/5 rounded-2xl px-6 py-4 text-2xl font-black text-amber-500 focus:outline-none focus:border-amber-500/50 transition-all">
+                                    <input type="hidden" name="partialAmount" id="partialAmountHidden">
+                                </div>
+                                <p id="partialError" class="text-[10px] text-rose-500 font-black uppercase hidden">Số tiền không được vượt quá tổng nợ</p>
+                            </div>
+
+                            <div class="space-y-4">
+                                <label class="block text-xs font-black text-zinc-400 uppercase tracking-widest">Tải
                                     lên biên lai (Build/Ảnh chụp màn hình)</label>
                                 <div class="qr-upload-area"
                                     onclick="document.getElementById('paymentProofInput').click()">
@@ -451,8 +476,15 @@
                         const nameDisplay = document.getElementById('creditorName');
 
                         form.action = `/personal/debt/pay/${debtId}`;
+                        form.dataset.maxAmount = amount;
                         amountDisplay.innerText = parseInt(amount).toLocaleString('vi-VN') + ' đ';
                         nameDisplay.innerText = name;
+                        
+                        // Reset partial input
+                        togglePartialInput(false);
+                        document.querySelector('input[name="paymentType"][value="full"]').checked = true;
+                        document.getElementById('partialAmountDisplay').value = '';
+                        document.getElementById('partialAmountHidden').value = '';
 
                         if (qrCode) {
                             qrImg.src = qrCode;
@@ -480,6 +512,47 @@
                             reader.readAsDataURL(input.files[0]);
                         }
                     }
+                    function togglePartialInput(show) {
+                        const container = document.getElementById('partialAmountContainer');
+                        const input = document.getElementById('partialAmountDisplay');
+                        if (show) {
+                            container.classList.remove('hidden');
+                            input.required = true;
+                        } else {
+                            container.classList.add('hidden');
+                            input.required = false;
+                        }
+                    }
+
+                    function validatePartialAmount(input) {
+                        const max = parseInt(document.getElementById('paymentForm').dataset.maxAmount);
+                        const current = parseInt(input.value.replace(/\./g, '')) || 0;
+                        const error = document.getElementById('partialError');
+                        const hidden = document.getElementById('partialAmountHidden');
+                        
+                        hidden.value = current;
+                        
+                        if (current > max) {
+                            error.classList.remove('hidden');
+                            input.classList.add('border-rose-500');
+                        } else {
+                            error.classList.add('hidden');
+                            input.classList.remove('border-rose-500');
+                        }
+                    }
+
+                    document.getElementById('paymentForm').onsubmit = function(e) {
+                        const type = document.querySelector('input[name="paymentType"]:checked').value;
+                        if (type === 'partial') {
+                            const max = parseInt(this.dataset.maxAmount);
+                            const current = parseInt(document.getElementById('partialAmountHidden').value) || 0;
+                            if (current <= 0 || current >= max) {
+                                alert('Số tiền trả một phần phải lớn hơn 0 và nhỏ hơn tổng nợ. Nếu trả hết, hãy chọn "TRẢ HẾT"');
+                                return false;
+                            }
+                        }
+                        return true;
+                    };
                 </script>
             </div>
                 </div>

@@ -2,13 +2,13 @@
 
 <div class="mb-10 flex justify-between items-end">
     <div>
-        <h2 class="text-4xl font-bold tracking-tight font-serif-heading">Quản lý chi tiêu</h2>
+        <h2 class="text-4xl font-black tracking-tight font-serif-heading">Quản lý chi tiêu</h2>
         <p class="text-zinc-400 mt-1 font-light">Theo dõi <span class="text-gradient font-medium">tài chính & ngân
                 sách</span> của bạn.</p>
     </div>
     <div class="flex gap-4">
         <button onclick="document.getElementById('debtModal').classList.remove('hidden')"
-            class="bg-zinc-800 hover:bg-zinc-700 text-amber-500 border border-amber-500/30 px-8 py-3 rounded-2xl font-bold transition-all shadow-lg">
+            class="bg-zinc-800 hover:bg-zinc-700 text-amber-500 border border-amber-500/30 px-8 py-3 rounded-2xl font-black transition-all shadow-lg">
             <i class="fa-solid fa-hand-holding-dollar mr-2"></i> Tạo khoản nợ
         </button>
         <button onclick="document.getElementById('expenseModal').classList.remove('hidden')"
@@ -32,7 +32,7 @@
             </div>
             <span class="text-[10px] font-black text-amber-500 uppercase tracking-widest">Tổng chi tiêu</span>
         </div>
-        <h3 class="text-4xl font-bold font-serif-heading text-white">
+        <h3 class="text-4xl font-black font-serif-heading text-white">
             <%= stats.total.toLocaleString('vi-VN') %> <span class="text-sm font-sans text-zinc-500">đ</span>
         </h3>
         <div class="mt-4 flex items-center gap-2">
@@ -55,10 +55,10 @@
             <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Tháng <%=
                     moment().format('MM/YYYY') %></span>
         </div>
-        <h3 class="text-4xl font-bold font-serif-heading text-white">
+        <h3 class="text-4xl font-black font-serif-heading text-white">
             <%= stats.monthly.toLocaleString('vi-VN') %> <span class="text-sm font-sans text-zinc-500">đ</span>
         </h3>
-        <p class="text-[10px] text-zinc-500 mt-4 uppercase font-bold tracking-tighter">Chi tiêu định kỳ tháng này</p>
+        <p class="text-[10px] text-zinc-500 mt-4 uppercase font-black tracking-tighter">Chi tiêu định kỳ tháng này</p>
     </div>
 
     <!-- Daily (Glass) -->
@@ -70,10 +70,10 @@
             </div>
             <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Hôm nay</span>
         </div>
-        <h3 class="text-4xl font-bold font-serif-heading text-white">
+        <h3 class="text-4xl font-black font-serif-heading text-white">
             <%= stats.daily.toLocaleString('vi-VN') %> <span class="text-sm font-sans text-zinc-500">đ</span>
         </h3>
-        <p class="text-[10px] text-zinc-500 mt-4 uppercase font-bold tracking-tighter">
+        <p class="text-[10px] text-zinc-500 mt-4 uppercase font-black tracking-tighter">
             <%= moment().format('DD MMMM, YYYY') %>
         </p>
     </div>
@@ -82,11 +82,11 @@
 <!-- Tabs -->
 <div class="flex gap-1 bg-zinc-950/50 p-1 rounded-2xl w-fit mb-8 border border-white/5">
     <button onclick="switchTab('spending')" id="tab-spending"
-        class="px-8 py-3 rounded-xl text-sm font-bold transition-all bg-emerald-500 text-zinc-950 shadow-lg">
+        class="px-8 py-3 rounded-xl text-sm font-black transition-all bg-emerald-500 text-zinc-950 shadow-lg">
         <i class="fa-solid fa-cart-shopping mr-2"></i> Chi tiêu
     </button>
     <button onclick="switchTab('debts')" id="tab-debts"
-        class="px-8 py-3 rounded-xl text-sm font-bold transition-all text-zinc-500 hover:text-white">
+        class="px-8 py-3 rounded-xl text-sm font-black transition-all text-zinc-500 hover:text-white">
         <i class="fa-solid fa-handshake-angle mr-2"></i> Khoản nợ
     </button>
 </div>
@@ -94,7 +94,7 @@
 <!-- Expense List Section -->
 <div id="spending-section" class="glass-card overflow-hidden">
     <div class="p-8 border-b border-white/5 flex justify-between items-center bg-zinc-900/30">
-        <h3 class="text-xl font-bold font-serif-heading">Lịch sử giao dịch</h3>
+        <h3 class="text-xl font-black font-serif-heading">Lịch sử giao dịch</h3>
     </div>
 
     <div class="overflow-x-auto">
@@ -114,7 +114,7 @@
                         <tr class="group hover:bg-white/[0.03] transition-colors">
                             <td class="px-8 py-6">
                                 <div class="flex flex-col">
-                                    <span class="text-base font-black text-white">
+                                    <span class="text-xl font-black text-white">
                                         <%= moment(exp.date).format('HH:mm') %>
                                     </span>
                                     <span class="text-xs text-emerald-500/80 font-black uppercase">
@@ -128,7 +128,7 @@
                                         class="w-10 h-10 bg-zinc-800/50 rounded-xl flex items-center justify-center text-amber-500 shadow-inner">
                                         <i class="fa-solid fa-receipt text-sm"></i>
                                     </div>
-                                    <span class="text-base font-bold text-zinc-100">
+                                    <span class="text-base font-black text-zinc-100">
                                         <%= exp.title %>
                                     </span>
                                 </div>
@@ -196,16 +196,16 @@
                                 <%= debt.creditorId ? debt.creditorId.fullName : 'Người dùng' %>
                             </p>
                             <p class="text-sm text-zinc-400 font-medium">Xác nhận bạn đang nợ khoản: <span
-                                    class="text-amber-500 font-bold">
+                                    class="text-amber-500 font-black">
                                     <%= debt.description %>
                                 </span></p>
-                            <p class="text-[11px] text-zinc-500 font-bold uppercase mt-1 tracking-widest">
+                            <p class="text-[11px] text-zinc-500 font-black uppercase mt-1 tracking-widest">
                                 <%= moment(debt.createdAt).format('DD MMMM, YYYY · HH:mm') %>
                             </p>
                         </div>
                     </div>
                     <div class="flex items-center gap-10">
-                        <span class="text-4xl font-black font-serif-heading text-amber-500 drop-shadow-lg">
+                        <span class="text-5xl font-black font-serif-heading text-amber-500 drop-shadow-lg">
                             <%= debt.amount.toLocaleString('vi-VN') %> đ
                         </span>
                         <div class="flex gap-3">
@@ -248,10 +248,10 @@
                                         <i class="fa-solid fa-hand-holding-dollar"></i>
                                     </div>
                                     <div>
-                                        <p class="text-base font-black text-white">Nợ <%= debt.creditorId ?
+                                        <p class="text-xl font-black text-white">Nợ <%= debt.creditorId ?
                                                 debt.creditorId.fullName : 'Người dùng' %>
                                         </p>
-                                        <p class="text-xs text-zinc-400 font-bold">
+                                        <p class="text-xs text-zinc-400 font-black">
                                             <%= debt.description %>
                                         </p>
                                     </div>
@@ -297,10 +297,10 @@
                                         <i class="fa-solid fa-coins"></i>
                                     </div>
                                     <div>
-                                        <p class="text-base font-black text-white">
+                                        <p class="text-xl font-black text-white">
                                             <%= debt.debtorId ? debt.debtorId.fullName : 'Người dùng' %>
                                         </p>
-                                        <p class="text-xs text-zinc-400 font-bold">
+                                        <p class="text-xs text-zinc-400 font-black">
                                             <%= debt.description %>
                                         </p>
                                     </div>
@@ -340,7 +340,7 @@
                                         <%= moment(debt.updatedAt).format('DD/MM/YYYY') %>
                                     </span>
                                 </div>
-                                <p class="text-white font-bold mb-1">
+                                <p class="text-white font-black mb-1">
                                     <%= debt.debtorId._id.toString()===user._id.toString() ? 'Bạn đã trả cho' :
                                         debt.debtorId.fullName + ' đã trả cho bạn' %>
                                 </p>
@@ -466,7 +466,7 @@
                     <div
                         class="glass-card p-10 w-full max-w-lg border-amber-500/20 shadow-[0_0_50px_rgba(245,158,11,0.1)]">
                         <div class="flex justify-between items-center mb-8">
-                            <h3 class="text-3xl font-bold font-serif-heading text-gradient">Tạo khoản cho vay</h3>
+                            <h3 class="text-3xl font-black font-serif-heading text-gradient">Tạo khoản cho vay</h3>
                             <button onclick="document.getElementById('debtModal').classList.add('hidden')"
                                 class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-zinc-500 hover:text-white transition-all">
                                 <i class="fa-solid fa-xmark text-xl"></i>
@@ -497,10 +497,10 @@
                                     <div class="relative">
                                         <input type="text" id="debtAmountDisplay" required placeholder="0"
                                             oninput="formatMoneyInput(this)"
-                                            class="w-full bg-zinc-950 border border-white/10 rounded-2xl px-6 py-5 text-3xl font-bold font-serif-heading text-amber-500 focus:outline-none focus:border-amber-500/50 transition-all">
+                                            class="w-full bg-zinc-950 border border-white/10 rounded-2xl px-6 py-5 text-3xl font-black font-serif-heading text-amber-500 focus:outline-none focus:border-amber-500/50 transition-all">
                                         <input type="hidden" name="amount" id="debtAmount">
                                         <span
-                                            class="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-500 font-bold">VNĐ</span>
+                                            class="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-500 font-black">VNĐ</span>
                                     </div>
                                 </div>
 
@@ -526,7 +526,7 @@
                                 class="btn-primary-glow w-full py-5 rounded-2xl text-lg mt-4 shadow-xl">
                                 <i class="fa-solid fa-paper-plane mr-2"></i> Gửi yêu cầu xác nhận nợ
                             </button>
-                            <p class="text-[10px] text-center text-zinc-500 uppercase font-bold tracking-tighter mt-4">
+                            <p class="text-[10px] text-center text-zinc-500 uppercase font-black tracking-tighter mt-4">
                                 Người nhận sẽ nhận được yêu cầu và phải duyệt để khoản nợ có hiệu lực</p>
                         </form>
                     </div>
@@ -538,7 +538,7 @@
                     <div
                         class="glass-card p-10 w-full max-w-lg border-amber-500/20 shadow-[0_0_50px_rgba(245,158,11,0.1)]">
                         <div class="flex justify-between items-center mb-8">
-                            <h3 class="text-3xl font-bold font-serif-heading text-gradient">Ghi chi tiêu mới</h3>
+                            <h3 class="text-3xl font-black font-serif-heading text-gradient">Ghi chi tiêu mới</h3>
                             <button onclick="document.getElementById('expenseModal').classList.add('hidden')"
                                 class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-zinc-500 hover:text-white transition-all">
                                 <i class="fa-solid fa-xmark text-xl"></i>
@@ -554,10 +554,10 @@
                                     <div class="relative">
                                         <input type="text" id="expenseAmountDisplay" required placeholder="0"
                                             oninput="formatMoneyInput(this)"
-                                            class="w-full bg-zinc-950 border border-white/10 rounded-2xl px-6 py-5 text-3xl font-bold font-serif-heading text-amber-500 focus:outline-none focus:border-amber-500/50 transition-all">
+                                            class="w-full bg-zinc-950 border border-white/10 rounded-2xl px-6 py-5 text-3xl font-black font-serif-heading text-amber-500 focus:outline-none focus:border-amber-500/50 transition-all">
                                         <input type="hidden" name="amount" id="expenseAmount">
                                         <span
-                                            class="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-500 font-bold">VNĐ</span>
+                                            class="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-500 font-black">VNĐ</span>
                                     </div>
                                 </div>
 

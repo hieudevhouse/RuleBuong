@@ -20,7 +20,7 @@
                 <img src="https://ui-avatars.com/api/?name=User+2&background=E8D5A3&color=000" class="w-10 h-10 rounded-full border-2 border-obsidian-500">
                 <img src="https://ui-avatars.com/api/?name=User+3&background=B8965A&color=000" class="w-10 h-10 rounded-full border-2 border-obsidian-500">
             </div>
-            <p class="text-xs text-zinc-500 font-bold uppercase tracking-widest flex items-center">
+            <p class="text-xs text-zinc-300 font-black uppercase tracking-widest flex items-center">
                 +1,200 Thành viên tin dùng
             </p>
         </div>
@@ -40,7 +40,7 @@
     <div class="max-w-md w-full mx-auto">
         <div class="mb-12">
             <h2 class="text-4xl font-black text-white font-serif-heading mb-3">Chào mừng quay lại</h2>
-            <p class="text-zinc-500 font-medium">Nhập thông tin định danh để truy cập hệ thống.</p>
+            <p class="text-zinc-300 font-medium">Nhập thông tin định danh để truy cập hệ thống.</p>
         </div>
 
         <% if (typeof error !== 'undefined') { %>
@@ -54,24 +54,24 @@
 
         <form action="/auth/login" method="POST" class="space-y-8">
             <div class="space-y-3">
-                <label class="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Địa chỉ Email</label>
+                <label class="block text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Địa chỉ Email</label>
                 <div class="relative group">
-                    <i class="fa-regular fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-gold-500 transition-colors"></i>
+                    <i class="fa-regular fa-envelope absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-gold-500 transition-colors"></i>
                     <input type="email" name="email" required placeholder="name@company.com"
-                        class="w-full bg-white/[0.03] border border-white/10 rounded-2xl pl-14 pr-6 py-4 text-white font-bold focus:outline-none focus:border-gold-500/50 transition-all placeholder:text-zinc-700">
+                        class="w-full bg-white/[0.03] border border-white/10 rounded-2xl pl-14 pr-6 py-4 text-white font-black focus:outline-none focus:border-gold-500/50 transition-all placeholder:text-zinc-700">
                 </div>
             </div>
 
             <div class="space-y-3">
                 <div class="flex justify-between items-center">
-                    <label class="block text-[10px] font-black text-zinc-500 uppercase tracking-[0.2em]">Mật khẩu</label>
+                    <label class="block text-[10px] font-black text-zinc-300 uppercase tracking-[0.2em]">Mật khẩu</label>
                     <a href="#" class="text-[10px] font-black text-gold-500 uppercase tracking-widest hover:text-gold-400 transition-colors">Quên mật khẩu?</a>
                 </div>
                 <div class="relative group">
-                    <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-gold-500 transition-colors"></i>
+                    <i class="fa-solid fa-lock absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400 group-focus-within:text-gold-500 transition-colors"></i>
                     <input type="password" id="password" name="password" required placeholder="••••••••"
-                        class="w-full bg-white/[0.03] border border-white/10 rounded-2xl pl-14 pr-14 py-4 text-white font-bold focus:outline-none focus:border-gold-500/50 transition-all placeholder:text-zinc-700">
-                    <button type="button" onclick="togglePw()" class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-white transition-colors">
+                        class="w-full bg-white/[0.03] border border-white/10 rounded-2xl pl-14 pr-14 py-4 text-white font-black focus:outline-none focus:border-gold-500/50 transition-all placeholder:text-zinc-700">
+                    <button type="button" onclick="togglePw()" class="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-400 hover:text-white transition-colors">
                         <i id="pwIcon" class="fa-regular fa-eye"></i>
                     </button>
                 </div>
@@ -85,7 +85,7 @@
         </form>
 
         <div class="mt-12 text-center">
-            <p class="text-zinc-500 text-sm font-medium">
+            <p class="text-zinc-300 text-sm font-medium">
                 Chưa có tài khoản? 
                 <a href="/auth/register" class="text-gold-500 font-black uppercase tracking-widest ml-2 hover:text-gold-400 transition-colors">Đăng ký ngay</a>
             </p>

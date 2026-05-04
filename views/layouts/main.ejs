@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%= title %></title>
+    <title>
+        <%= title %>
+    </title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!-- Tailwind -->
@@ -51,28 +56,42 @@
             --bg-dark: #09090B;
             --sidebar-bg: #0D0D0F;
             --surface: #141418;
-            --border: rgba(201, 169, 110, 0.12);
-            --text-main: #F0EDE8;
-            --text-muted: #7A7774;
-            --glass: rgba(20, 20, 24, 0.6);
+            --border: rgba(201, 169, 110, 0.3);
+            --text-main: #FFFFFF;
+            --text-muted: #D1D1D6;
+            --glass: rgba(20, 20, 24, 0.8);
         }
 
         /* --- Scrollbar --- */
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-dark); }
-        ::-webkit-scrollbar-thumb { 
-            background: rgba(201, 169, 110, 0.15); 
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(201, 169, 110, 0.15);
             border-radius: 10px;
             transition: all 0.3s ease;
         }
-        ::-webkit-scrollbar-thumb:hover { background: rgba(201, 169, 110, 0.3); }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(201, 169, 110, 0.3);
+        }
 
         body {
             font-family: 'DM Sans', sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-main);
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.6;
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         .glass-card {
@@ -204,26 +223,38 @@
 
         /* Responsive Breakpoints */
         @media (max-width: 1200px) {
-            .main-content { padding: 2rem 2.5rem; }
+            .main-content {
+                padding: 2rem 2.5rem;
+            }
         }
 
         @media (max-width: 1024px) {
-            .sidebar { 
-                transform: translateX(-100%); 
-                box-shadow: 0 0 50px rgba(0,0,0,0.8);
+            .sidebar {
+                transform: translateX(-100%);
+                box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
             }
-            .sidebar.open { transform: translateX(0); }
-            .main-content { margin-left: 0; padding: 1.5rem; }
-            
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+
             .mobile-overlay {
                 position: fixed;
                 inset: 0;
-                background: rgba(0,0,0,0.7);
+                background: rgba(0, 0, 0, 0.7);
                 backdrop-filter: blur(4px);
                 z-index: 90;
                 display: none;
             }
-            .sidebar.open + .mobile-overlay { display: block; }
+
+            .sidebar.open+.mobile-overlay {
+                display: block;
+            }
         }
 
         .text-gradient {
@@ -231,7 +262,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        
+
         .font-serif-heading {
             font-family: 'Instrument Serif', serif;
             letter-spacing: -0.02em;
@@ -265,9 +296,17 @@
         .fade-in {
             animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Hide number input spinners */
@@ -276,11 +315,13 @@
             -webkit-appearance: none;
             margin: 0;
         }
+
         input[type=number] {
             -moz-appearance: textfield;
         }
     </style>
 </head>
+
 <body>
     <!-- Mobile Overlay -->
     <div class="mobile-overlay" onclick="toggleSidebar()"></div>
@@ -288,7 +329,8 @@
     <!-- Sidebar -->
     <aside class="sidebar p-6 flex flex-col bg-obsidian-400" id="sidebar">
         <div class="flex items-center gap-3 mb-12 px-3">
-            <div class="w-11 h-11 bg-gradient-to-br from-gold-300 to-gold-600 rounded-2xl flex items-center justify-center text-obsidian-500 text-2xl font-black shadow-lg shadow-gold-500/10">
+            <div
+                class="w-11 h-11 bg-gradient-to-br from-gold-300 to-gold-600 rounded-2xl flex items-center justify-center text-obsidian-500 text-2xl font-black shadow-lg shadow-gold-500/10">
                 P
             </div>
             <h1 class="text-2xl font-black tracking-tighter text-white">Pencake<span class="text-gold-500">.</span></h1>
@@ -297,24 +339,29 @@
         <div class="flex-1 space-y-4 overflow-y-auto custom-scrollbar">
             <!-- Section: Personal -->
             <div>
-                <button onclick="toggleSidebarSection('personal-nav', this)" class="section-header w-full flex items-center justify-between group">
+                <button onclick="toggleSidebarSection('personal-nav', this)"
+                    class="section-header w-full flex items-center justify-between group">
                     <span>Không gian cá nhân</span>
                     <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-300"></i>
                 </button>
                 <nav id="personal-nav" class="dropdown-nav space-y-1">
-                    <a href="/personal/dashboard" class="nav-link <%= typeof title !== 'undefined' && title.includes('Bảng điều khiển cá nhân') ? 'active' : '' %>">
+                    <a href="/personal/dashboard"
+                        class="nav-link <%= typeof title !== 'undefined' && title.includes('Bảng điều khiển cá nhân') ? 'active' : '' %>">
                         <i class="fa-solid fa-house"></i>
                         <span>Tổng quan</span>
                     </a>
-                    <a href="/personal/schedule" class="nav-link <%= typeof title !== 'undefined' && title.includes('Lịch làm việc') ? 'active' : '' %>">
+                    <a href="/personal/schedule"
+                        class="nav-link <%= typeof title !== 'undefined' && title.includes('Lịch làm việc') ? 'active' : '' %>">
                         <i class="fa-solid fa-calendar-days"></i>
                         <span>Lịch làm việc</span>
                     </a>
-                    <a href="/personal/profile" class="nav-link <%= typeof title !== 'undefined' && title.includes('Hồ sơ') ? 'active' : '' %>">
+                    <a href="/personal/profile"
+                        class="nav-link <%= typeof title !== 'undefined' && title.includes('Hồ sơ') ? 'active' : '' %>">
                         <i class="fa-solid fa-user-circle"></i>
                         <span>Hồ sơ cá nhân</span>
                     </a>
-                    <a href="/personal/expenses" class="nav-link <%= typeof title !== 'undefined' && title.includes('Quản lý chi tiêu') ? 'active' : '' %>">
+                    <a href="/personal/expenses"
+                        class="nav-link <%= typeof title !== 'undefined' && title.includes('Quản lý chi tiêu') ? 'active' : '' %>">
                         <i class="fa-solid fa-wallet"></i>
                         <span>Quản lý chi tiêu</span>
                     </a>
@@ -323,20 +370,24 @@
 
             <!-- Section: Room -->
             <div>
-                <button onclick="toggleSidebarSection('room-nav', this)" class="section-header w-full flex items-center justify-between group">
+                <button onclick="toggleSidebarSection('room-nav', this)"
+                    class="section-header w-full flex items-center justify-between group">
                     <span>Quản lý phòng</span>
                     <i class="fa-solid fa-chevron-down text-[9px] transition-transform duration-300"></i>
                 </button>
                 <nav id="room-nav" class="dropdown-nav space-y-1">
-                    <a href="/room/dashboard" class="nav-link <%= typeof title !== 'undefined' && (title.includes('Thông tin chung') || title.includes('Room Management')) ? 'active' : '' %>">
+                    <a href="/room/dashboard"
+                        class="nav-link <%= typeof title !== 'undefined' && (title.includes('Thông tin chung') || title.includes('Room Management')) ? 'active' : '' %>">
                         <i class="fa-solid fa-users"></i>
                         <span>Thông tin chung</span>
                     </a>
-                    <a href="/room/fines" class="nav-link <%= typeof title !== 'undefined' && title.includes('Vi phạm') ? 'active' : '' %>">
+                    <a href="/room/fines"
+                        class="nav-link <%= typeof title !== 'undefined' && title.includes('Vi phạm') ? 'active' : '' %>">
                         <i class="fa-solid fa-gavel"></i>
                         <span>Vi phạm & Thanh toán</span>
                     </a>
-                    <a href="/room/purchases" class="nav-link <%= typeof title !== 'undefined' && title.includes('Mua đồ chung') ? 'active' : '' %>">
+                    <a href="/room/purchases"
+                        class="nav-link <%= typeof title !== 'undefined' && title.includes('Mua đồ chung') ? 'active' : '' %>">
                         <i class="fa-solid fa-cart-shopping"></i>
                         <span>Mua đồ chung</span>
                     </a>
@@ -356,25 +407,35 @@
             <div class="flex items-center gap-4 px-2">
                 <div class="relative">
                     <% if (user.avatar && user.avatar.startsWith('http')) { %>
-                        <img src="<%= user.avatar %>" alt="Avatar" class="w-12 h-12 rounded-2xl object-cover border-2 border-white/5">
-                    <% } else { %>
-                        <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user.fullName) %>&background=C9A96E&color=0D0D0F" alt="Avatar" class="w-12 h-12 rounded-2xl border-2 border-white/5">
-                    <% } %>
-                    <div class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-obsidian-400 rounded-full"></div>
+                        <img src="<%= user.avatar %>" alt="Avatar"
+                            class="w-12 h-12 rounded-2xl object-cover border-2 border-white/5">
+                        <% } else { %>
+                            <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user.fullName) %>&background=C9A96E&color=0D0D0F"
+                                alt="Avatar" class="w-12 h-12 rounded-2xl border-2 border-white/5">
+                            <% } %>
+                                <div
+                                    class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 border-2 border-obsidian-400 rounded-full">
+                                </div>
                 </div>
                 <div class="overflow-hidden">
-                    <p class="text-[14px] font-bold text-white truncate"><%= user.fullName %></p>
-                    <p class="text-[10px] text-gold-500 font-black uppercase tracking-widest"><%= user.role === 'super_admin' ? 'Administrator' : 'Resident' %></p>
+                    <p class="text-[14px] font-black text-white truncate">
+                        <%= user.fullName %>
+                    </p>
+                    <p class="text-[10px] text-gold-500 font-black uppercase tracking-widest">
+                        <%= user.role==='super_admin' ? 'Administrator' : 'Resident' %>
+                    </p>
                 </div>
             </div>
-            <a href="/auth/logout" class="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-rose-500/10 hover:bg-rose-500 hover:text-white text-rose-500 rounded-2xl font-extrabold transition-all text-xs border border-rose-500/10 uppercase tracking-widest">
+            <a href="/auth/logout"
+                class="w-full flex items-center justify-center gap-2 py-3.5 px-4 bg-rose-500/10 hover:bg-rose-500 hover:text-white text-rose-500 rounded-2xl font-extrabold transition-all text-xs border border-rose-500/10 uppercase tracking-widest">
                 <i class="fa-solid fa-power-off"></i> Đăng xuất
             </a>
         </div>
     </aside>
 
     <!-- Mobile Menu Toggle -->
-    <button onclick="toggleSidebar()" class="lg:hidden fixed bottom-8 right-8 w-16 h-16 bg-gold-500 text-obsidian-500 rounded-3xl flex items-center justify-center text-2xl shadow-2xl z-[200] active:scale-90 transition-all border-4 border-obsidian-400/50">
+    <button onclick="toggleSidebar()"
+        class="lg:hidden fixed bottom-8 right-8 w-16 h-16 bg-gold-500 text-obsidian-500 rounded-3xl flex items-center justify-center text-2xl shadow-2xl z-[200] active:scale-90 transition-all border-4 border-obsidian-400/50">
         <i class="fa-solid fa-bars-staggered"></i>
     </button>
 
@@ -391,7 +452,7 @@
         function toggleSidebarSection(id, btn) {
             const nav = document.getElementById(id);
             const icon = btn.querySelector('.fa-chevron-down');
-            
+
             if (nav.style.maxHeight && nav.style.maxHeight !== '0px') {
                 nav.style.maxHeight = '0px';
                 icon.style.transform = 'rotate(0deg)';
@@ -409,7 +470,7 @@
                     nav.style.maxHeight = nav.scrollHeight + "px";
                     const btn = nav.previousElementSibling;
                     const icon = btn.querySelector('.fa-chevron-down');
-                    if(icon) icon.style.transform = 'rotate(-180deg)';
+                    if (icon) icon.style.transform = 'rotate(-180deg)';
                 } else {
                     nav.style.maxHeight = '0px';
                 }
@@ -417,4 +478,5 @@
         });
     </script>
 </body>
+
 </html>

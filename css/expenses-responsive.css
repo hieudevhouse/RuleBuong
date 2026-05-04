@@ -1,0 +1,447 @@
+/* =============================================
+   RESPONSIVE PATCH — expenses.ejs
+   Chỉ override layout mobile, giữ nguyên desktop
+   Thêm vào <head> sau các style hiện có
+   ============================================= */
+
+/* ── 1. HEADER ── */
+@media (max-width: 768px) {
+
+    /* Stack title + buttons dọc */
+    .mb-10.flex.justify-between.items-end {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px !important;
+    }
+
+    /* Buttons full width, cạnh nhau */
+    .mb-10.flex.justify-between.items-end .flex.gap-4 {
+        width: 100%;
+        gap: 10px;
+    }
+
+    .mb-10.flex.justify-between.items-end .flex.gap-4 button {
+        flex: 1;
+        justify-content: center;
+        padding: 13px 12px !important;
+        font-size: 13px !important;
+    }
+
+    /* Title nhỏ lại */
+    .mb-10.flex.justify-between.items-end h2 {
+        font-size: 26px !important;
+    }
+}
+
+/* ── 2. STATS GRID ── */
+@media (max-width: 768px) {
+
+    /* 3 cột → 1 cột */
+    .grid.grid-cols-1.md\:grid-cols-3 {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+        margin-bottom: 20px !important;
+    }
+
+    /* Card stat: ngang (icon bên trái, text bên phải) */
+    .grid.grid-cols-1.md\:grid-cols-3 .glass-card {
+        padding: 14px 16px !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 14px !important;
+    }
+
+    /* Icon stat */
+    .grid.grid-cols-1.md\:grid-cols-3 .glass-card .w-12.h-12 {
+        flex-shrink: 0;
+        width: 44px !important;
+        height: 44px !important;
+    }
+
+    /* Ẩn progress bar trong stat card */
+    .grid.grid-cols-1.md\:grid-cols-3 .mt-4.flex.items-center {
+        display: none !important;
+    }
+
+    /* Value font nhỏ lại */
+    .grid.grid-cols-1.md\:grid-cols-3 h3 {
+        font-size: 22px !important;
+    }
+
+    /* Margin top label nhỏ */
+    .grid.grid-cols-1.md\:grid-cols-3 .mt-4 {
+        margin-top: 2px !important;
+    }
+}
+
+/* ── 3. TABS ── */
+@media (max-width: 768px) {
+
+    /* Tabs full width */
+    .flex.gap-1.bg-zinc-950\/50 {
+        width: 100% !important;
+    }
+
+    .flex.gap-1.bg-zinc-950\/50 button {
+        flex: 1;
+        text-align: center;
+        padding: 11px 8px !important;
+        font-size: 13px !important;
+    }
+}
+
+/* ── 4. TRANSACTION TABLE → CARD LIST ── */
+@media (max-width: 768px) {
+
+    /* Ẩn thead */
+    #spending-section thead {
+        display: none !important;
+    }
+
+    /* tbody rows thành flex card */
+    #spending-section tbody tr {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        align-items: center !important;
+        gap: 0 !important;
+        padding: 12px 16px !important;
+        position: relative !important;
+    }
+
+    /* Ẩn cột Thời gian (td:nth-child(1)) — hiển thị qua cột số tiền */
+    #spending-section tbody td:nth-child(1) {
+        order: 3;
+        flex: 0 0 auto;
+        padding: 0 !important;
+        position: absolute;
+        bottom: 14px;
+        right: 56px;
+    }
+
+    #spending-section tbody td:nth-child(1) .text-base {
+        display: none;
+        /* Ẩn giờ */
+    }
+
+    #spending-section tbody td:nth-child(1) .text-xs {
+        font-size: 11px !important;
+        color: var(--tw-text-opacity, #6ee7b7);
+    }
+
+    /* Nội dung (td:nth-child(2)) — chiếm hết chiều rộng trừ amount */
+    #spending-section tbody td:nth-child(2) {
+        order: 1;
+        flex: 1 1 auto;
+        padding: 0 0 4px 0 !important;
+        min-width: 0;
+    }
+
+    #spending-section tbody td:nth-child(2) span {
+        font-size: 14px !important;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: block;
+        max-width: 180px;
+    }
+
+    /* Icon receipt trong td:nth-child(2) */
+    #spending-section tbody td:nth-child(2) .w-10 {
+        width: 38px !important;
+        height: 38px !important;
+        flex-shrink: 0;
+    }
+
+    /* Danh mục (td:nth-child(3)) */
+    #spending-section tbody td:nth-child(3) {
+        order: 2;
+        flex: 1 1 100%;
+        padding: 0 0 8px 52px !important;
+        /* indent theo icon */
+    }
+
+    #spending-section tbody td:nth-child(3) span {
+        font-size: 10px !important;
+        padding: 2px 8px !important;
+    }
+
+    /* Số tiền (td:nth-child(4)) */
+    #spending-section tbody td:nth-child(4) {
+        order: 4;
+        flex: 0 0 auto;
+        padding: 0 !important;
+        text-align: right;
+        position: absolute;
+        top: 14px;
+        right: 56px;
+    }
+
+    #spending-section tbody td:nth-child(4) span {
+        font-size: 15px !important;
+        color: #f0f0f0;
+    }
+
+    /* Xóa (td:nth-child(5)) */
+    #spending-section tbody td:nth-child(5) {
+        order: 5;
+        flex: 0 0 auto;
+        padding: 0 !important;
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        transform: translateY(-50%);
+    }
+
+    #spending-section tbody td:nth-child(5) button {
+        width: 36px !important;
+        height: 36px !important;
+    }
+
+    /* Section header padding */
+    #spending-section .p-8.border-b {
+        padding: 14px 16px !important;
+    }
+
+    /* Min height cho row */
+    #spending-section tbody tr:not(:last-child) {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+}
+
+/* ── 5. APPROVAL QUEUE ── */
+@media (max-width: 768px) {
+
+    /* Stack dọc */
+    .flex.flex-col.lg\:flex-row.justify-between {
+        flex-direction: column !important;
+        gap: 16px !important;
+        align-items: flex-start !important;
+    }
+
+    /* Amount + buttons ngang */
+    .flex.flex-col.lg\:flex-row.justify-between>.flex.items-center.gap-10 {
+        width: 100%;
+        justify-content: space-between;
+        gap: 12px !important;
+    }
+
+    .flex.flex-col.lg\:flex-row.justify-between>.flex.items-center.gap-10>span {
+        font-size: 24px !important;
+    }
+
+    /* Buttons */
+    .flex.flex-col.lg\:flex-row.justify-between button {
+        padding: 11px 16px !important;
+        font-size: 12px !important;
+    }
+
+    /* Padding */
+    .glass-card .p-8.divide-y {
+        padding: 12px 14px !important;
+    }
+
+    .glass-card .p-8.divide-y>div {
+        padding: 14px 0 !important;
+    }
+
+    /* Header */
+    .glass-card .p-8.bg-amber-500\/20 {
+        padding: 12px 16px !important;
+    }
+}
+
+/* ── 6. DEBT GRID (My Debts + Receivables) ── */
+@media (max-width: 768px) {
+
+    /* 2 cột → 1 cột */
+    .grid.grid-cols-1.md\:grid-cols-2.gap-10 {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+
+    /* Debt item: font nhỏ */
+    .grid.grid-cols-1.md\:grid-cols-2.gap-10 .text-2xl {
+        font-size: 17px !important;
+    }
+
+    /* Padding debt body */
+    .grid.grid-cols-1.md\:grid-cols-2.gap-10 .p-8.space-y-6 {
+        padding: 12px !important;
+    }
+
+    /* Debt item padding */
+    .grid.grid-cols-1.md\:grid-cols-2.gap-10 .p-6.bg-zinc-900\/50 {
+        padding: 12px !important;
+        gap: 10px !important;
+    }
+
+    /* Header debt section */
+    .grid.grid-cols-1.md\:grid-cols-2.gap-10 .p-8.bg-rose-500\/10,
+    .grid.grid-cols-1.md\:grid-cols-2.gap-10 .p-8.bg-blue-500\/10 {
+        padding: 12px 14px !important;
+    }
+
+    /* Thanh toán button */
+    .grid.grid-cols-1.md\:grid-cols-2.gap-10 .px-5.py-2\.5 {
+        padding: 8px 12px !important;
+        font-size: 10px !important;
+    }
+}
+
+/* ── 7. PAYMENT HISTORY ── */
+@media (max-width: 768px) {
+
+    /* Grid 3 cột → 1 cột */
+    .grid.grid-cols-1.md\:grid-cols-2.lg\:grid-cols-3 {
+        grid-template-columns: 1fr !important;
+        gap: 10px !important;
+    }
+
+    .glass-card.mt-10 .p-8:last-child {
+        padding: 12px !important;
+    }
+
+    .glass-card.mt-10 .p-8.border-b {
+        padding: 12px 16px !important;
+    }
+}
+
+/* ── 8. PAYMENT MODAL → BOTTOM SHEET ── */
+@media (max-width: 768px) {
+    #paymentModal {
+        align-items: flex-end !important;
+        padding: 0 !important;
+    }
+
+    #paymentModal>div {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 20px 20px 0 0 !important;
+        max-height: 90vh;
+        overflow-y: auto;
+        padding-bottom: env(safe-area-inset-bottom, 16px);
+    }
+
+    /* Handle bar */
+    #paymentModal>div::before {
+        content: '';
+        display: block;
+        width: 36px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 2px;
+        margin: 10px auto 0;
+    }
+
+    #paymentModal .p-8 {
+        padding: 16px !important;
+    }
+
+    #paymentModal .p-8.border-b {
+        padding: 14px 16px !important;
+    }
+
+    #paymentModal .w-64.h-64 {
+        width: 160px !important;
+        height: 160px !important;
+    }
+
+    #paymentModal .text-3xl {
+        font-size: 24px !important;
+    }
+}
+
+/* ── 9. EXPENSE MODAL → BOTTOM SHEET ── */
+@media (max-width: 768px) {
+
+    #expenseModal,
+    #debtModal {
+        align-items: flex-end !important;
+        padding: 0 !important;
+    }
+
+    #expenseModal>div,
+    #debtModal>div {
+        max-width: 100% !important;
+        width: 100% !important;
+        border-radius: 20px 20px 0 0 !important;
+        max-height: 92vh;
+        overflow-y: auto;
+        padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    /* Handle bar */
+    #expenseModal>div::before,
+    #debtModal>div::before {
+        content: '';
+        display: block;
+        width: 36px;
+        height: 4px;
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 2px;
+        margin: 10px auto 0;
+    }
+
+    #expenseModal .p-10,
+    #debtModal .p-10 {
+        padding: 16px !important;
+    }
+
+    /* Title */
+    #expenseModal .text-3xl,
+    #debtModal .text-3xl {
+        font-size: 20px !important;
+    }
+
+    /* Grid 2 cột trong form → vẫn giữ 2 cột vì nhỏ gọn */
+    #expenseModal .grid.grid-cols-2 {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Amount input nhỏ lại */
+    #expenseModal .text-3xl.font-bold,
+    #debtModal .text-3xl.font-bold {
+        font-size: 22px !important;
+        padding: 14px 16px !important;
+    }
+
+    /* Submit button */
+    #expenseModal .btn-primary-glow,
+    #debtModal .btn-primary-glow {
+        padding: 14px !important;
+        font-size: 14px !important;
+    }
+}
+
+/* ── 10. GLOBAL TOUCH TARGETS ── */
+@media (max-width: 768px) {
+
+    /* Tất cả button tối thiểu 44px để dễ tap */
+    button {
+        min-height: 44px;
+    }
+
+    /* Ngoại lệ: các button icon nhỏ (delete, close) */
+    .w-10.h-10,
+    .w-10.h-10.rounded-xl {
+        min-height: unset;
+    }
+}
+
+/* ── 11. SECTION PADDING MOBILE ── */
+@media (max-width: 768px) {
+    .glass-card>.p-8 {
+        padding: 14px 16px !important;
+    }
+
+    /* Giữ padding lớn cho desktop, override trên mobile */
+    .px-8.py-6 {
+        padding: 10px 16px !important;
+    }
+
+    .px-8.py-5 {
+        padding: 10px 14px !important;
+    }
+}

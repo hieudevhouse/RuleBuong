@@ -1,0 +1,658 @@
+<!-- <link rel="stylesheet" href="/css/expenses-responsive.css"> -->
+
+<div class="mb-10 flex justify-between items-end">
+    <div>
+        <h2 class="text-4xl font-bold tracking-tight font-serif-heading">Quản lý chi tiêu</h2>
+        <p class="text-zinc-400 mt-1 font-light">Theo dõi <span class="text-gradient font-medium">tài chính & ngân
+                sách</span> của bạn.</p>
+    </div>
+    <div class="flex gap-4">
+        <button onclick="document.getElementById('debtModal').classList.remove('hidden')"
+            class="bg-zinc-800 hover:bg-zinc-700 text-amber-500 border border-amber-500/30 px-8 py-3 rounded-2xl font-bold transition-all shadow-lg">
+            <i class="fa-solid fa-hand-holding-dollar mr-2"></i> Tạo khoản nợ
+        </button>
+        <button onclick="document.getElementById('expenseModal').classList.remove('hidden')"
+            class="btn-primary-glow px-8 py-3 rounded-2xl">
+            <i class="fa-solid fa-plus mr-2"></i> Ghi chi tiêu mới
+        </button>
+    </div>
+</div>
+
+<!-- Financial Overview -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+    <!-- Total Balance (Gold) -->
+    <div class="glass-card p-8 relative overflow-hidden group border-amber-500/30">
+        <div
+            class="absolute -right-4 -top-4 w-24 h-24 bg-amber-500/10 rounded-full blur-3xl group-hover:bg-amber-500/20 transition-all">
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+            <div
+                class="w-12 h-12 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-500 shadow-lg shadow-amber-500/20">
+                <i class="fa-solid fa-vault text-xl"></i>
+            </div>
+            <span class="text-[10px] font-black text-amber-500 uppercase tracking-widest">Tổng chi tiêu</span>
+        </div>
+        <h3 class="text-4xl font-bold font-serif-heading text-white">
+            <%= stats.total.toLocaleString('vi-VN') %> <span class="text-sm font-sans text-zinc-500">đ</span>
+        </h3>
+        <div class="mt-4 flex items-center gap-2">
+            <div class="h-1 flex-1 bg-white/5 rounded-full overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-500 to-yellow-300 w-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Monthly (Silver) -->
+    <div class="glass-card p-8 relative overflow-hidden group border-zinc-400/20">
+        <div
+            class="absolute -right-4 -top-4 w-24 h-24 bg-zinc-400/10 rounded-full blur-3xl group-hover:bg-zinc-400/20 transition-all">
+        </div>
+        <div class="flex items-center gap-4 mb-4">
+            <div
+                class="w-12 h-12 bg-zinc-400/20 rounded-2xl flex items-center justify-center text-zinc-300 shadow-lg shadow-zinc-400/10">
+                <i class="fa-solid fa-calendar-check text-xl"></i>
+            </div>
+            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Tháng <%=
+                    moment().format('MM/YYYY') %></span>
+        </div>
+        <h3 class="text-4xl font-bold font-serif-heading text-white">
+            <%= stats.monthly.toLocaleString('vi-VN') %> <span class="text-sm font-sans text-zinc-500">đ</span>
+        </h3>
+        <p class="text-[10px] text-zinc-500 mt-4 uppercase font-bold tracking-tighter">Chi tiêu định kỳ tháng này</p>
+    </div>
+
+    <!-- Daily (Glass) -->
+    <div class="glass-card p-8 relative overflow-hidden group border-white/10">
+        <div class="flex items-center gap-4 mb-4">
+            <div
+                class="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-zinc-100 shadow-lg shadow-white/5">
+                <i class="fa-solid fa-bolt text-xl"></i>
+            </div>
+            <span class="text-[10px] font-black text-zinc-400 uppercase tracking-widest">Hôm nay</span>
+        </div>
+        <h3 class="text-4xl font-bold font-serif-heading text-white">
+            <%= stats.daily.toLocaleString('vi-VN') %> <span class="text-sm font-sans text-zinc-500">đ</span>
+        </h3>
+        <p class="text-[10px] text-zinc-500 mt-4 uppercase font-bold tracking-tighter">
+            <%= moment().format('DD MMMM, YYYY') %>
+        </p>
+    </div>
+</div>
+
+<!-- Tabs -->
+<div class="flex gap-1 bg-zinc-950/50 p-1 rounded-2xl w-fit mb-8 border border-white/5">
+    <button onclick="switchTab('spending')" id="tab-spending"
+        class="px-8 py-3 rounded-xl text-sm font-bold transition-all bg-emerald-500 text-zinc-950 shadow-lg">
+        <i class="fa-solid fa-cart-shopping mr-2"></i> Chi tiêu
+    </button>
+    <button onclick="switchTab('debts')" id="tab-debts"
+        class="px-8 py-3 rounded-xl text-sm font-bold transition-all text-zinc-500 hover:text-white">
+        <i class="fa-solid fa-handshake-angle mr-2"></i> Khoản nợ
+    </button>
+</div>
+
+<!-- Expense List Section -->
+<div id="spending-section" class="glass-card overflow-hidden">
+    <div class="p-8 border-b border-white/5 flex justify-between items-center bg-zinc-900/30">
+        <h3 class="text-xl font-bold font-serif-heading">Lịch sử giao dịch</h3>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left">
+            <thead>
+                <tr class="text-xs font-black text-zinc-400 uppercase tracking-wider bg-zinc-950/70">
+                    <th class="px-8 py-5">Thời gian</th>
+                    <th class="px-8 py-5">Nội dung</th>
+                    <th class="px-8 py-5">Danh mục</th>
+                    <th class="px-8 py-5 text-right">Số tiền</th>
+                    <th class="px-8 py-5 text-center">Thao tác</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+                <% if (expenses && expenses.length> 0) { %>
+                    <% expenses.forEach(exp=> { %>
+                        <tr class="group hover:bg-white/[0.03] transition-colors">
+                            <td class="px-8 py-6">
+                                <div class="flex flex-col">
+                                    <span class="text-base font-black text-white">
+                                        <%= moment(exp.date).format('HH:mm') %>
+                                    </span>
+                                    <span class="text-xs text-emerald-500/80 font-black uppercase">
+                                        <%= moment(exp.date).format('DD/MM/YYYY') %>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-10 h-10 bg-zinc-800/50 rounded-xl flex items-center justify-center text-amber-500 shadow-inner">
+                                        <i class="fa-solid fa-receipt text-sm"></i>
+                                    </div>
+                                    <span class="text-base font-bold text-zinc-100">
+                                        <%= exp.title %>
+                                    </span>
+                                </div>
+                            </td>
+                            <td class="px-8 py-6">
+                                <span
+                                    class="px-4 py-1.5 bg-zinc-800 text-zinc-200 text-[11px] font-black rounded-lg uppercase border border-white/5">
+                                    <%= exp.category || 'Chung' %>
+                                </span>
+                            </td>
+                            <td class="px-8 py-6 text-right">
+                                <span class="text-xl font-black font-serif-heading text-white drop-shadow-md">
+                                    -<%= exp.amount.toLocaleString('vi-VN') %> đ
+                                </span>
+                            </td>
+                            <td class="px-8 py-6 text-center">
+                                <form action="/personal/expenses/delete/<%= exp._id %>" method="POST"
+                                    onsubmit="return confirm('Xóa giao dịch này?')">
+                                    <button type="submit"
+                                        class="w-10 h-10 rounded-xl hover:bg-rose-500 text-zinc-500 hover:text-white transition-all shadow-lg">
+                                        <i class="fa-solid fa-trash-can text-sm"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        <% }) %>
+                            <% } else { %>
+                                <tr>
+                                    <td colspan="5" class="px-8 py-24 text-center">
+                                        <div class="flex flex-col items-center">
+                                            <div
+                                                class="w-20 h-20 bg-zinc-900 rounded-full flex items-center justify-center mb-6">
+                                                <i class="fa-solid fa-piggy-bank text-5xl text-zinc-800"></i>
+                                            </div>
+                                            <p class="text-zinc-400 text-lg font-medium">Chưa có giao dịch nào được ghi
+                                                lại.</p>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Approval Queue -->
+<% if (pendingApprovals && pendingApprovals.length> 0) { %>
+    <div class="glass-card border-amber-500 bg-amber-500/10 shadow-[0_0_30px_rgba(245,158,11,0.15)] overflow-hidden">
+        <div class="p-8 bg-amber-500/20 border-b border-amber-500/20 flex justify-between items-center">
+            <h4 class="text-xl font-black text-amber-500"><i class="fa-solid fa-bell mr-3"></i>DUYỆT YÊU CẦU NỢ</h4>
+            <span
+                class="px-4 py-1.5 bg-amber-500 text-zinc-950 text-xs font-black rounded-lg uppercase animate-pulse shadow-lg">CẦN
+                XỬ LÝ NGAY</span>
+        </div>
+        <div class="p-8 divide-y divide-white/10">
+            <% pendingApprovals.forEach(debt=> { %>
+                <div class="flex flex-col lg:flex-row justify-between items-center py-8 first:pt-0 last:pb-0 gap-8">
+                    <div class="flex items-center gap-6">
+                        <div
+                            class="w-16 h-16 bg-amber-500/20 rounded-2xl flex items-center justify-center text-amber-500 shadow-inner">
+                            <i class="fa-solid fa-user-clock text-2xl"></i>
+                        </div>
+                        <div>
+                            <p class="text-lg font-black text-white">
+                                <%= debt.creditorId ? debt.creditorId.fullName : 'Người dùng' %>
+                            </p>
+                            <p class="text-sm text-zinc-400 font-medium">Xác nhận bạn đang nợ khoản: <span
+                                    class="text-amber-500 font-bold">
+                                    <%= debt.description %>
+                                </span></p>
+                            <p class="text-[11px] text-zinc-500 font-bold uppercase mt-1 tracking-widest">
+                                <%= moment(debt.createdAt).format('DD MMMM, YYYY · HH:mm') %>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-10">
+                        <span class="text-4xl font-black font-serif-heading text-amber-500 drop-shadow-lg">
+                            <%= debt.amount.toLocaleString('vi-VN') %> đ
+                        </span>
+                        <div class="flex gap-3">
+                            <form action="/personal/debt/approve/<%= debt._id %>" method="POST">
+                                <button type="submit"
+                                    class="px-8 py-3 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 text-sm font-black rounded-xl transition-all shadow-[0_0_20px_rgba(16,185,129,0.3)] hover:scale-105 active:scale-95">
+                                    CHẤP NHẬN
+                                </button>
+                            </form>
+                            <button
+                                class="px-8 py-3 bg-rose-500/20 hover:bg-rose-600 text-rose-500 hover:text-white text-sm font-black rounded-xl transition-all border border-rose-500/30 hover:scale-105 active:scale-95">
+                                TỪ CHỐI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+    <% } %>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+            <!-- My Debts -->
+            <div class="glass-card overflow-hidden border-rose-500/20">
+                <div class="p-8 bg-rose-500/10 border-b border-rose-500/10 flex justify-between items-center">
+                    <h4 class="text-lg font-black text-rose-400 uppercase tracking-widest"><i
+                            class="fa-solid fa-arrow-down-long mr-3"></i>Khoản nợ hiện tại</h4>
+                    <span
+                        class="text-xs font-black text-rose-500 bg-rose-500/10 px-3 py-1.5 rounded-lg border border-rose-500/20">CẦN
+                        TRẢ</span>
+                </div>
+                <div class="p-8 space-y-6">
+                    <% if (myDebts && myDebts.length> 0) { %>
+                        <% myDebts.forEach(debt=> { %>
+                            <div
+                                class="flex justify-between items-center p-6 bg-zinc-900/50 rounded-2xl border border-white/5 group hover:border-rose-500/40 transition-all shadow-lg">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-rose-500/10 rounded-xl flex items-center justify-center text-rose-500">
+                                        <i class="fa-solid fa-hand-holding-dollar"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-base font-black text-white">Nợ <%= debt.creditorId ?
+                                                debt.creditorId.fullName : 'Người dùng' %>
+                                        </p>
+                                        <p class="text-xs text-zinc-400 font-bold">
+                                            <%= debt.description %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-6">
+                                    <span class="text-2xl font-black font-serif-heading text-rose-400">
+                                        <%= debt.amount.toLocaleString('vi-VN') %> đ
+                                    </span>
+                                    <button
+                                        onclick="openPaymentModal('<%= debt._id %>', '<%= debt.amount %>', '<%= debt.creditorId.fullName %>', '<%= debt.creditorId.qrCode || '' %>')"
+                                        class="px-5 py-2.5 bg-rose-500 hover:bg-rose-400 text-white text-[10px] font-black rounded-lg transition-all shadow-lg shadow-rose-500/20 uppercase tracking-widest">
+                                        THANH TOÁN
+                                    </button>
+                                </div>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <div class="text-center py-16 opacity-30">
+                                        <i class="fa-solid fa-shield-check text-6xl mb-6"></i>
+                                        <p class="text-sm font-black uppercase tracking-widest">Bạn không nợ ai cả.</p>
+                                    </div>
+                                    <% } %>
+                </div>
+            </div>
+
+            <!-- Receivables -->
+            <div class="glass-card overflow-hidden border-blue-500/20">
+                <div class="p-8 bg-blue-500/10 border-b border-blue-500/10 flex justify-between items-center">
+                    <h4 class="text-lg font-black text-blue-400 uppercase tracking-widest"><i
+                            class="fa-solid fa-arrow-up-long mr-3"></i>Người khác nợ bạn</h4>
+                    <span
+                        class="text-xs font-black text-blue-500 bg-blue-500/10 px-3 py-1.5 rounded-lg border border-blue-500/20">CHỜ
+                        THU</span>
+                </div>
+                <div class="p-8 space-y-6">
+                    <% if (othersOweMe && othersOweMe.length> 0) { %>
+                        <% othersOweMe.forEach(debt=> { %>
+                            <div
+                                class="flex justify-between items-center p-6 bg-zinc-900/50 rounded-2xl border border-white/5 group hover:border-blue-500/40 transition-all shadow-lg">
+                                <div class="flex items-center gap-4">
+                                    <div
+                                        class="w-12 h-12 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-500">
+                                        <i class="fa-solid fa-coins"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-base font-black text-white">
+                                            <%= debt.debtorId ? debt.debtorId.fullName : 'Người dùng' %>
+                                        </p>
+                                        <p class="text-xs text-zinc-400 font-bold">
+                                            <%= debt.description %>
+                                        </p>
+                                    </div>
+                                </div>
+                                <span class="text-2xl font-black font-serif-heading text-blue-400">
+                                    <%= debt.amount.toLocaleString('vi-VN') %> đ
+                                </span>
+                            </div>
+                            <% }) %>
+                                <% } else { %>
+                                    <div class="text-center py-16 opacity-30">
+                                        <i class="fa-solid fa-hand-holding-heart text-6xl mb-6"></i>
+                                        <p class="text-sm font-black uppercase tracking-widest">Hiện không có ai nợ bạn.
+                                        </p>
+                                    </div>
+                                    <% } %>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment History -->
+        <% if (paidHistory && paidHistory.length> 0) { %>
+            <div class="glass-card mt-10 overflow-hidden border-zinc-800">
+                <div class="p-8 border-b border-white/5">
+                    <h4 class="text-lg font-black text-zinc-400 uppercase tracking-widest"><i
+                            class="fa-solid fa-clock-rotate-left mr-3"></i>Lịch sử thanh toán</h4>
+                </div>
+                <div class="p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <% paidHistory.forEach(debt=> { %>
+                            <div class="p-6 bg-zinc-950/50 rounded-2xl border border-white/5">
+                                <div class="flex justify-between items-start mb-4">
+                                    <span
+                                        class="text-[10px] font-black text-emerald-500 bg-emerald-500/10 px-2 py-1 rounded">HOÀN
+                                        THÀNH</span>
+                                    <span class="text-[10px] text-zinc-500">
+                                        <%= moment(debt.updatedAt).format('DD/MM/YYYY') %>
+                                    </span>
+                                </div>
+                                <p class="text-white font-bold mb-1">
+                                    <%= debt.debtorId._id.toString()===user._id.toString() ? 'Bạn đã trả cho' :
+                                        debt.debtorId.fullName + ' đã trả cho bạn' %>
+                                </p>
+                                <p class="text-xs text-zinc-400 mb-4">
+                                    <%= debt.description %>
+                                </p>
+                                <div class="flex justify-between items-end">
+                                    <span class="text-xl font-black text-zinc-200">
+                                        <%= debt.amount.toLocaleString('vi-VN') %> đ
+                                    </span>
+                                    <% if (debt.paymentProof) { %>
+                                        <a href="<%= debt.paymentProof %>" target="_blank"
+                                            class="text-[10px] font-black text-amber-500 hover:text-amber-400 uppercase tracking-widest border-b border-amber-500/30">Xem
+                                            Bill</a>
+                                        <% } %>
+                                </div>
+                            </div>
+                            <% }) %>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+                </div>
+
+                <!-- Payment Modal -->
+                <div id="paymentModal"
+                    class="fixed inset-0 bg-black/90 backdrop-blur-md hidden z-[100] flex items-center justify-center p-6">
+                    <div class="glass-card w-full max-w-lg overflow-hidden animate-in fade-in zoom-in duration-300">
+                        <div class="p-8 border-b border-white/5 flex justify-between items-center bg-zinc-900/50">
+                            <div>
+                                <h3 class="text-2xl font-black text-white">Thanh toán khoản nợ</h3>
+                                <p class="text-zinc-400 text-sm mt-1">Quét mã QR và tải lên biên lai thanh toán</p>
+                            </div>
+                            <button onclick="document.getElementById('paymentModal').classList.add('hidden')"
+                                class="w-10 h-10 rounded-full hover:bg-white/10 flex items-center justify-center transition-all">
+                                <i class="fa-solid fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <form id="paymentForm" method="POST" enctype="multipart/form-data" class="p-8 space-y-8">
+                            <div class="text-center">
+                                <p class="text-xs font-black text-zinc-500 uppercase tracking-widest mb-4">Mã QR của
+                                    <span id="creditorName" class="text-amber-500">Người nhận</span>
+                                </p>
+                                <div
+                                    class="w-64 h-64 mx-auto bg-zinc-800 rounded-3xl overflow-hidden border-2 border-amber-500/30 p-2 mb-4 shadow-2xl">
+                                    <img id="creditorQR" src="" class="w-full h-full object-contain" alt="QR Code">
+                                    <div id="noQR"
+                                        class="w-full h-full flex flex-col items-center justify-center text-zinc-600 hidden">
+                                        <i class="fa-solid fa-qrcode text-5xl mb-3"></i>
+                                        <p class="text-[10px] font-black uppercase">Người này chưa cài mã QR</p>
+                                    </div>
+                                </div>
+                                <h4 class="text-3xl font-black text-white" id="paymentAmountDisplay">0 đ</h4>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-black text-zinc-400 mb-3 uppercase tracking-widest">Tải
+                                    lên biên lai (Build/Ảnh chụp màn hình)</label>
+                                <div class="qr-upload-area"
+                                    onclick="document.getElementById('paymentProofInput').click()">
+                                    <i class="fa-solid fa-receipt text-3xl mb-3"></i>
+                                    <p id="proofText">Bấm để tải lên ảnh chuyển khoản</p>
+                                    <img id="proofPreview"
+                                        class="hidden max-h-32 mx-auto mt-4 rounded-lg border border-emerald-500/30">
+                                </div>
+                                <input type="file" id="paymentProofInput" name="paymentProof" accept="image/*"
+                                    class="hidden" required onchange="previewProof(this)">
+                            </div>
+
+                            <button type="submit"
+                                class="w-full py-5 bg-white text-zinc-950 font-black rounded-2xl hover:bg-zinc-200 transition-all shadow-2xl shadow-white/5 uppercase tracking-widest text-lg">
+                                XÁC NHẬN ĐÃ TRẢ TIỀN
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <script>
+                    function openPaymentModal(debtId, amount, name, qrCode) {
+                        const modal = document.getElementById('paymentModal');
+                        const form = document.getElementById('paymentForm');
+                        const qrImg = document.getElementById('creditorQR');
+                        const noQR = document.getElementById('noQR');
+                        const amountDisplay = document.getElementById('paymentAmountDisplay');
+                        const nameDisplay = document.getElementById('creditorName');
+
+                        form.action = `/personal/debt/pay/${debtId}`;
+                        amountDisplay.innerText = parseInt(amount).toLocaleString('vi-VN') + ' đ';
+                        nameDisplay.innerText = name;
+
+                        if (qrCode) {
+                            qrImg.src = qrCode;
+                            qrImg.classList.remove('hidden');
+                            noQR.classList.add('hidden');
+                        } else {
+                            qrImg.classList.add('hidden');
+                            noQR.classList.remove('hidden');
+                        }
+
+                        modal.classList.remove('hidden');
+                    }
+
+                    function previewProof(input) {
+                        const preview = document.getElementById('proofPreview');
+                        const text = document.getElementById('proofText');
+
+                        if (input.files && input.files[0]) {
+                            const reader = new FileReader();
+                            reader.onload = function (e) {
+                                preview.src = e.target.result;
+                                preview.classList.remove('hidden');
+                                text.innerText = 'Đã chọn: ' + input.files[0].name;
+                            }
+                            reader.readAsDataURL(input.files[0]);
+                        }
+                    }
+                </script>
+                </div>
+
+                <!-- Debt Creation Modal -->
+                <div id="debtModal"
+                    class="fixed inset-0 bg-black/90 backdrop-blur-md z-[500] flex items-center justify-center hidden">
+                    <div
+                        class="glass-card p-10 w-full max-w-lg border-amber-500/20 shadow-[0_0_50px_rgba(245,158,11,0.1)]">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="text-3xl font-bold font-serif-heading text-gradient">Tạo khoản cho vay</h3>
+                            <button onclick="document.getElementById('debtModal').classList.add('hidden')"
+                                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-zinc-500 hover:text-white transition-all">
+                                <i class="fa-solid fa-xmark text-xl"></i>
+                            </button>
+                        </div>
+
+                        <form action="/personal/debt/create" method="POST" class="space-y-6">
+                            <div class="grid grid-cols-1 gap-6">
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Người
+                                        nợ tiền</label>
+                                    <select name="debtorId" required
+                                        class="w-full bg-zinc-950 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500/50 transition-all appearance-none">
+                                        <option value="">Chọn thành viên trong hệ thống...</option>
+                                        <% allUsers.forEach(u=> { %>
+                                            <option value="<%= u._id %>">
+                                                <%= u.fullName %> (<%= u.email %>)
+                                            </option>
+                                            <% }) %>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Số
+                                        tiền cho vay</label>
+                                    <div class="relative">
+                                        <input type="text" id="debtAmountDisplay" required placeholder="0"
+                                            oninput="formatMoneyInput(this)"
+                                            class="w-full bg-zinc-950 border border-white/10 rounded-2xl px-6 py-5 text-3xl font-bold font-serif-heading text-amber-500 focus:outline-none focus:border-amber-500/50 transition-all">
+                                        <input type="hidden" name="amount" id="debtAmount">
+                                        <span
+                                            class="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-500 font-bold">VNĐ</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Nội
+                                        dung nợ</label>
+                                    <input type="text" name="description" required
+                                        placeholder="Ví dụ: Tiền ăn tối qua, Mượn mua đồ..."
+                                        class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500/50 transition-all">
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Ngày
+                                        đến hạn (Tùy chọn)</label>
+                                    <input type="date" name="dueDate"
+                                        class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500/50 transition-all">
+                                </div>
+                            </div>
+
+                            <button type="submit" onclick="prepareSubmit('debt')"
+                                class="btn-primary-glow w-full py-5 rounded-2xl text-lg mt-4 shadow-xl">
+                                <i class="fa-solid fa-paper-plane mr-2"></i> Gửi yêu cầu xác nhận nợ
+                            </button>
+                            <p class="text-[10px] text-center text-zinc-500 uppercase font-bold tracking-tighter mt-4">
+                                Người nhận sẽ nhận được yêu cầu và phải duyệt để khoản nợ có hiệu lực</p>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Expense Modal -->
+                <div id="expenseModal"
+                    class="fixed inset-0 bg-black/90 backdrop-blur-md z-[500] flex items-center justify-center hidden">
+                    <div
+                        class="glass-card p-10 w-full max-w-lg border-amber-500/20 shadow-[0_0_50px_rgba(245,158,11,0.1)]">
+                        <div class="flex justify-between items-center mb-8">
+                            <h3 class="text-3xl font-bold font-serif-heading text-gradient">Ghi chi tiêu mới</h3>
+                            <button onclick="document.getElementById('expenseModal').classList.add('hidden')"
+                                class="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 text-zinc-500 hover:text-white transition-all">
+                                <i class="fa-solid fa-xmark text-xl"></i>
+                            </button>
+                        </div>
+
+                        <form action="/personal/expenses/create" method="POST" class="space-y-6">
+                            <div class="grid grid-cols-1 gap-6">
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Số
+                                        tiền chi tiêu</label>
+                                    <div class="relative">
+                                        <input type="text" id="expenseAmountDisplay" required placeholder="0"
+                                            oninput="formatMoneyInput(this)"
+                                            class="w-full bg-zinc-950 border border-white/10 rounded-2xl px-6 py-5 text-3xl font-bold font-serif-heading text-amber-500 focus:outline-none focus:border-amber-500/50 transition-all">
+                                        <input type="hidden" name="amount" id="expenseAmount">
+                                        <span
+                                            class="absolute right-6 top-1/2 -translate-y-1/2 text-zinc-500 font-bold">VNĐ</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Nội
+                                        dung chi tiêu</label>
+                                    <input type="text" name="title" required placeholder="Ví dụ: Ăn trưa, Tiền điện..."
+                                        class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500/50 transition-all">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label
+                                            class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Danh
+                                            mục</label>
+                                        <select name="category"
+                                            class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500/50 transition-all appearance-none">
+                                            <option value="Ăn uống">Ăn uống</option>
+                                            <option value="Di chuyển">Di chuyển</option>
+                                            <option value="Mua sắm">Mua sắm</option>
+                                            <option value="Học tập">Học tập</option>
+                                            <option value="Giải trí">Giải trí</option>
+                                            <option value="Khác">Khác</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label
+                                            class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Ngày
+                                            giờ</label>
+                                        <input type="datetime-local" name="date"
+                                            value="<%= moment().format('YYYY-MM-DDTHH:mm') %>"
+                                            class="w-full bg-zinc-900 border border-white/10 rounded-2xl px-5 py-4 text-white focus:outline-none focus:border-amber-500/50 transition-all">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label
+                                        class="block text-[10px] font-black text-zinc-500 uppercase tracking-widest mb-3">Ghi
+                                        chú (Tùy chọn)</label>
+                                    <textarea name="notes" rows="3" placeholder="Chi tiết thêm..."
+                                        class="w-full bg-zinc-900 border border-white/10 rounded-2xl p-5 text-white focus:outline-none focus:border-amber-500/50 transition-all resize-none"></textarea>
+                                </div>
+                            </div>
+
+                            <button type="submit" onclick="prepareSubmit('expense')"
+                                class="btn-primary-glow w-full py-5 rounded-2xl text-lg mt-4">
+                                <i class="fa-solid fa-coins mr-2"></i> Xác nhận chi tiêu
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <script>
+                    function formatMoneyInput(input) {
+                        let value = input.value.replace(/[^0-9]/g, '');
+                        if (value.length > 0) {
+                            input.value = new Intl.NumberFormat('vi-VN').format(value);
+                        } else {
+                            input.value = '';
+                        }
+                    }
+
+                    function prepareSubmit(type) {
+                        if (type === 'expense') {
+                            const display = document.getElementById('expenseAmountDisplay');
+                            const hidden = document.getElementById('expenseAmount');
+                            if (display && hidden) hidden.value = display.value.replace(/\./g, '');
+                        } else if (type === 'debt') {
+                            const display = document.getElementById('debtAmountDisplay');
+                            const hidden = document.getElementById('debtAmount');
+                            if (display && hidden) hidden.value = display.value.replace(/\./g, '');
+                        }
+                    }
+
+                    function switchTab(tab) {
+                        const spendingBtn = document.getElementById('tab-spending');
+                        const debtsBtn = document.getElementById('tab-debts');
+                        const spendingSection = document.getElementById('spending-section');
+                        const debtsSection = document.getElementById('debts-section');
+
+                        if (tab === 'spending') {
+                            spendingBtn.classList.add('bg-emerald-500', 'text-zinc-950', 'shadow-lg');
+                            spendingBtn.classList.remove('text-zinc-500');
+                            debtsBtn.classList.add('text-zinc-500');
+                            debtsBtn.classList.remove('bg-emerald-500', 'text-zinc-950', 'shadow-lg');
+                            spendingSection.classList.remove('hidden');
+                            debtsSection.classList.add('hidden');
+                        } else {
+                            debtsBtn.classList.add('bg-emerald-500', 'text-zinc-950', 'shadow-lg');
+                            debtsBtn.classList.remove('text-zinc-500');
+                            spendingBtn.classList.add('text-zinc-500');
+                            spendingBtn.classList.remove('bg-emerald-500', 'text-zinc-950', 'shadow-lg');
+                            spendingSection.classList.add('hidden');
+                            debtsSection.classList.remove('hidden');
+                        }
+                    }
+                </script>

@@ -1,0 +1,152 @@
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+    <div>
+        <h2 class="text-4xl md:text-5xl font-black tracking-tight font-serif-heading text-gradient-gold">Mua đồ chung</h2>
+        <div class="flex items-center gap-3 mt-2">
+            <span class="w-8 h-px bg-gold-500/50"></span>
+            <p class="text-zinc-400 font-medium italic">Danh sách sắm sửa tập thể • <span class="text-gold-500 font-black tracking-[0.2em] uppercase text-[10px]">Pencake Shared Space</span></p>
+        </div>
+    </div>
+    <button onclick="document.getElementById('sharedPurchaseModal').classList.remove('hidden')" class="btn-primary-glow px-10 py-5 rounded-2xl text-[13px] font-black transition-all text-obsidian-500 uppercase tracking-widest shadow-2xl active:scale-95 flex items-center justify-center">
+        <i class="fa-solid fa-cart-plus mr-3 text-lg"></i> Ghi nhận mua đồ mới
+    </button>
+</div>
+
+<!-- Stats / Info Section -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+    <div class="glass-card p-8 bg-gold-500/[0.02] border-gold-500/10">
+        <p class="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2">Tổng số đợt mua</p>
+        <p class="text-4xl font-black text-white font-serif-heading"><%= sharedPurchases.length %></p>
+    </div>
+    <div class="glass-card p-8 border-white/5">
+        <p class="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2">Tổng chi phí chung</p>
+        <p class="text-4xl font-black text-gold-500 font-serif-heading"><%= sharedPurchases.reduce((sum, item) => sum + item.amount, 0).toLocaleString('vi-VN') %><span class="text-xs font-sans ml-1 opacity-50">đ</span></p>
+    </div>
+    <div class="glass-card p-8 border-white/5 bg-obsidian-300">
+        <p class="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-2">Lưu ý</p>
+        <p class="text-[11px] text-zinc-400 font-medium leading-relaxed italic">Các khoản này không trừ trực tiếp vào quỹ phòng. Dùng để theo dõi chi phí mua sắm chung giữa các thành viên.</p>
+    </div>
+</div>
+
+<!-- Purchases Grid -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+    <% if (sharedPurchases && sharedPurchases.length > 0) { %>
+        <% sharedPurchases.forEach(item => { %>
+            <div class="glass-card overflow-hidden group hover:bg-white/[0.02] transition-all duration-500 flex flex-col h-full">
+                <div class="h-56 bg-zinc-900 relative overflow-hidden">
+                    <% if (item.image) { %>
+                        <img src="<%= item.image %>" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <% } else { %>
+                        <div class="w-full h-full flex flex-col items-center justify-center opacity-20">
+                            <i class="fa-solid fa-image text-5xl mb-3"></i>
+                            <p class="text-[10px] font-black uppercase tracking-widest">Không có ảnh</p>
+                        </div>
+                    <% } %>
+                    <div class="absolute top-4 left-4 px-4 py-2 bg-black/60 backdrop-blur-md rounded-2xl border border-white/10 shadow-2xl">
+                        <p class="text-[10px] font-black text-gold-500 uppercase tracking-widest"><%= moment(item.date).format('DD/MM/YYYY') %></p>
+                    </div>
+                </div>
+                <div class="p-8 flex flex-col flex-1">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-10 h-10 rounded-xl overflow-hidden border-2 border-white/5 shadow-lg shadow-black/50">
+                            <% if (item.userId.avatar) { %>
+                                <img src="<%= item.userId.avatar %>" class="w-full h-full object-cover">
+                            <% } else { %>
+                                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(item.userId.fullName) %>&background=1c1c22&color=C9A96E" class="w-full h-full">
+                            <% } %>
+                        </div>
+                        <div>
+                            <p class="text-[9px] text-zinc-500 font-black uppercase tracking-widest">Người sắm</p>
+                            <p class="text-xs font-black text-white"><%= item.userId.fullName %></p>
+                        </div>
+                    </div>
+                    <h4 class="text-xl font-black text-white mb-4 line-clamp-2 min-h-[3.5rem]"><%= item.productName %></h4>
+                    <div class="mt-auto pt-6 border-t border-white/5">
+                        <p class="text-zinc-500 text-[10px] font-black uppercase tracking-widest mb-1">Thành tiền</p>
+                        <p class="text-3xl font-black font-serif-heading text-gradient-gold"><%= item.amount.toLocaleString('vi-VN') %><span class="text-xs font-sans ml-1 opacity-50 uppercase">đ</span></p>
+                    </div>
+                </div>
+            </div>
+        <% }) %>
+    <% } else { %>
+        <div class="col-span-full py-32 text-center glass-card border-dashed">
+            <div class="flex flex-col items-center opacity-20">
+                <i class="fa-solid fa-shopping-cart text-7xl mb-6"></i>
+                <h3 class="text-2xl font-black font-serif-heading">Chưa có dữ liệu mua sắm</h3>
+                <p class="text-[10px] font-black uppercase tracking-[0.3em] mt-2">Hãy bắt đầu ghi nhận đợt mua đồ chung đầu tiên</p>
+            </div>
+        </div>
+    <% } %>
+</div>
+
+<!-- Modal -->
+<div id="sharedPurchaseModal" class="fixed inset-0 bg-obsidian-500/95 backdrop-blur-2xl hidden z-[300] flex items-center justify-center p-6 transition-all duration-500">
+    <div class="glass-card w-full max-w-xl overflow-hidden border-gold-500/20 shadow-[0_0_150px_rgba(201,169,110,0.15)]">
+        <div class="p-10 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+            <div>
+                <h3 class="text-4xl font-black font-serif-heading text-white">Ghi nhận mua đồ</h3>
+                <p class="text-gold-500 text-[10px] uppercase tracking-widest font-black mt-2">Lưu trữ chi phí sắm sửa tập thể</p>
+            </div>
+            <button onclick="document.getElementById('sharedPurchaseModal').classList.add('hidden')" class="w-14 h-14 rounded-2xl bg-white/5 hover:bg-rose-500/20 hover:text-rose-500 flex items-center justify-center transition-all text-zinc-400 group">
+                <i class="fa-solid fa-times text-2xl group-hover:rotate-90 transition-transform"></i>
+            </button>
+        </div>
+        <form action="/room/purchase/create" method="POST" enctype="multipart/form-data" class="p-10 space-y-8">
+            <div class="space-y-4">
+                <label class="block text-[11px] font-black text-zinc-500 uppercase tracking-[0.2em]">Sản phẩm/Đồ dùng đã mua</label>
+                <input type="text" name="productName" placeholder="Ví dụ: Thùng nước lọc, Gói xà phòng OMO..." required
+                    class="w-full bg-obsidian-300 border border-white/5 rounded-2xl px-8 py-5 text-white font-bold focus:outline-none focus:border-gold-500/50 transition-all placeholder:text-zinc-700 text-lg">
+            </div>
+            <div class="space-y-4">
+                <label class="block text-[11px] font-black text-zinc-500 uppercase tracking-[0.2em]">Tổng số tiền chi (đ)</label>
+                <div class="relative">
+                    <input type="number" name="amount" placeholder="250000" required
+                        class="w-full bg-obsidian-300 border border-white/5 rounded-2xl px-8 py-5 text-white font-black text-4xl focus:outline-none focus:border-gold-500/50 transition-all placeholder:text-zinc-800">
+                    <span class="absolute right-8 top-1/2 -translate-y-1/2 text-zinc-600 font-black text-xl">VNĐ</span>
+                </div>
+            </div>
+            <div class="space-y-4">
+                <label class="block text-[11px] font-black text-zinc-500 uppercase tracking-[0.2em]">Hình ảnh xác thực (Hóa đơn/Sản phẩm)</label>
+                <div class="relative group">
+                    <div class="w-full bg-obsidian-400 border-2 border-dashed border-white/10 rounded-3xl p-10 flex flex-col items-center justify-center group-hover:border-gold-500/30 transition-all cursor-pointer" onclick="document.getElementById('purchaseImage').click()">
+                        <div id="purchaseIconArea" class="w-16 h-16 bg-white/5 rounded-2xl flex items-center justify-center text-zinc-500 mb-4 group-hover:bg-gold-500 group-hover:text-obsidian-500 transition-all shadow-xl">
+                            <i class="fa-solid fa-cloud-arrow-up text-2xl"></i>
+                        </div>
+                        <p id="purchaseImageText" class="text-[10px] font-black text-zinc-500 uppercase tracking-widest text-center">Nhấp để chọn ảnh từ thiết bị</p>
+                        <img id="purchaseImagePreview" class="mt-6 w-full h-48 object-cover hidden rounded-2xl border border-white/10 shadow-2xl">
+                    </div>
+                    <input type="file" id="purchaseImage" name="image" accept="image/*" class="hidden" onchange="previewPurchaseImage(this)">
+                </div>
+            </div>
+            <div class="p-6 bg-blue-500/5 border border-blue-500/10 rounded-3xl flex gap-4">
+                <i class="fa-solid fa-circle-info text-blue-500 mt-1"></i>
+                <p class="text-[11px] text-zinc-400 font-medium leading-relaxed">
+                    Dữ liệu này sẽ được lưu công khai để cả buồng cùng theo dõi. Hệ thống <strong class="text-white">không</strong> tự động trừ vào quỹ phòng cho chức năng này.
+                </p>
+            </div>
+            <button type="submit" class="w-full py-6 btn-primary-glow text-obsidian-500 font-black rounded-2xl uppercase tracking-[0.3em] text-sm shadow-2xl shadow-gold-500/20 active:scale-95 transition-all">
+                XÁC NHẬN LƯU TRỮ
+            </button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function previewPurchaseImage(input) {
+        const preview = document.getElementById('purchaseImagePreview');
+        const text = document.getElementById('purchaseImageText');
+        const iconArea = document.getElementById('purchaseIconArea');
+        
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+                text.innerText = 'Đã chọn: ' + input.files[0].name;
+                text.classList.add('text-gold-500');
+                iconArea.classList.add('bg-gold-500', 'text-obsidian-500');
+                iconArea.innerHTML = '<i class="fa-solid fa-check text-2xl"></i>';
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>

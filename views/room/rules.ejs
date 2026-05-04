@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUẬT BUỒNG VUI VẺ 🍳 | Pencake</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Nunito:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body {
+            font-family: 'Roboto', system-ui, sans-serif;
+        }
+        .title-font {
+            font-family: 'Nunito', sans-serif;
+        }
+        .hero-bg {
+            background: linear-gradient(135deg, #10b981 0%, #f59e0b 50%, #ec4899 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('https://picsum.photos/id/1015/2000/1200') center/cover;
+            opacity: 0.15;
+        }
+        .floating-emoji {
+            position: absolute;
+            font-size: 3rem;
+            animation: float 6s ease-in-out infinite;
+            z-index: 1;
+            opacity: 0.9;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-25px); }
+        }
+        .rule-card {
+            transition: all 0.3s ease;
+            background: rgba(24, 24, 27, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .rule-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(24, 24, 27, 0.95);
+        }
+        .glass-nav {
+            background: rgba(9, 9, 11, 0.8);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white min-h-screen selection:bg-emerald-500/30">
+
+    <!-- NAVBAR -->
+    <nav class="glass-nav border-b border-white/10 sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-5 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <a href="/room/dashboard" class="w-11 h-11 bg-white rounded-2xl flex items-center justify-center text-2xl shadow-inner">🏠</a>
+                <div>
+                    <h1 class="title-font text-2xl font-bold tracking-tight">LUẬT BUỒNG</h1>
+                    <p class="text-emerald-400 text-xs -mt-1">Pencake Boarding System</p>
+                </div>
+            </div>
+            <div class="flex gap-4">
+                <a href="/room/dashboard" class="hidden md:flex items-center gap-2 px-5 py-2 bg-white/5 hover:bg-white/10 rounded-xl text-xs font-bold transition-all border border-white/5 uppercase tracking-widest">
+                    <i class="fa-solid fa-arrow-left"></i> Quay lại Dashboard
+                </a>
+                <button onclick="toggleMobileMenu()" class="md:hidden w-11 h-11 flex items-center justify-center text-2xl bg-white/5 rounded-xl">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div id="mobileMenu" class="hidden fixed inset-0 bg-zinc-950/95 backdrop-blur-2xl z-[100] pt-24 px-8">
+        <div class="flex flex-col gap-6 text-2xl font-bold">
+            <a href="/room/dashboard" class="py-4 border-b border-white/5 flex items-center justify-between">
+                <span>🏠 Dashboard</span>
+                <i class="fa-solid fa-chevron-right text-sm opacity-30"></i>
+            </a>
+            <a href="#luat" onclick="toggleMobileMenu()" class="py-4 border-b border-white/5 flex items-center justify-between">
+                <span>📜 10 Luật Buồng</span>
+                <i class="fa-solid fa-chevron-right text-sm opacity-30"></i>
+            </a>
+            <a href="#phat" onclick="toggleMobileMenu()" class="py-4 border-b border-white/5 flex items-center justify-between">
+                <span>💰 Bảng Phạt</span>
+                <i class="fa-solid fa-chevron-right text-sm opacity-30"></i>
+            </a>
+        </div>
+        <button onclick="toggleMobileMenu()" class="mt-12 w-full py-5 bg-white text-zinc-950 font-black rounded-2xl uppercase tracking-widest text-sm shadow-xl shadow-white/10">
+            Đóng menu
+        </button>
+    </div>
+
+    <!-- HERO BANNER -->
+    <section id="home" class="hero-bg min-h-[80vh] flex items-center relative">
+        <div class="floating-emoji" style="top: 15%; left: 10%; animation-delay: 0s;">🍳</div>
+        <div class="floating-emoji" style="top: 25%; right: 15%; animation-delay: 1.5s;">🧹</div>
+        <div class="floating-emoji" style="bottom: 30%; left: 20%; animation-delay: 3s;">🛌</div>
+        <div class="floating-emoji" style="bottom: 20%; right: 12%; animation-delay: 2.2s;">🎉</div>
+        <div class="floating-emoji" style="top: 45%; left: 65%; animation-delay: 4s;">🚬</div>
+
+        <div class="max-w-5xl mx-auto px-5 relative z-10 text-center py-20">
+            <div class="inline-flex items-center gap-2 bg-zinc-950/40 backdrop-blur-md px-6 py-2 rounded-full text-xs font-black mb-8 border border-white/10 tracking-widest">
+                <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                BUỒNG VUI VẺ • NỘI QUY CHÍNH THỨC
+            </div>
+
+            <h1 class="title-font text-6xl md:text-8xl font-black leading-none tracking-tighter mb-8 drop-shadow-2xl">
+                HIẾN PHÁP<br>
+                <span class="text-white">PHÒNG 4 ANH EM</span>
+            </h1>
+
+            <p class="text-lg md:text-xl text-white/80 max-w-2xl mx-auto mb-12 font-medium leading-relaxed">
+                Nơi những quy tắc trở thành niềm vui. Sống chung văn minh, dọn dẹp nhiệt tình, và luôn giữ cho buồng tràn ngập tiếng cười.
+            </p>
+
+            <div class="flex flex-col sm:flex-row gap-6 max-w-lg mx-auto">
+                <a href="#luat" class="flex-1 bg-white text-emerald-700 hover:bg-emerald-50 font-black text-lg py-6 rounded-2xl shadow-2xl transition-all active:scale-95">
+                    📜 Xem luật buồng
+                </a>
+                <button onclick="launchConfetti();"
+                        class="flex-1 border-2 border-white/30 hover:bg-white/10 backdrop-blur-md font-black text-lg py-6 rounded-2xl transition-all active:scale-95">
+                    Đồng ý luôn! 🎊
+                </button>
+            </div>
+        </div>
+
+        <div class="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-zinc-950 to-transparent"></div>
+    </section>
+
+    <!-- LUẬT BUỒNG -->
+    <section id="luat" class="py-24 bg-zinc-950">
+        <div class="max-w-5xl mx-auto px-5">
+            <div class="text-center mb-20">
+                <h2 class="title-font text-5xl font-black mb-4">Mười Điều Kỷ Luật</h2>
+                <div class="w-24 h-1 bg-emerald-500 mx-auto rounded-full"></div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Luật 1 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">🍲</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">01 • Nấu bữa tối</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Chỉ nấu bữa tối chung. Mỗi người 1 ngày. Nấu xong phải rửa bát trong 10 phút.</p>
+                    </div>
+                </div>
+
+                <!-- Luật 2 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">🧼</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">02 • Vệ sinh phòng</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Người nấu hôm đó phải quét nhà, lau bếp, dọn WC, thu gọn ban công...</p>
+                    </div>
+                </div>
+
+                <!-- Luật 3 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">🚬</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">03 • Hút thuốc</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Không để khói bay vào phòng, không để tàn thuốc rơi lung tung.</p>
+                    </div>
+                </div>
+
+                <!-- Luật 4 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">🛏️</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">04 • Giường ngủ</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Không dẫm lên giường • Không đặt chân lên gối</p>
+                    </div>
+                </div>
+
+                <!-- Luật 5 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">🌙</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">05 • Giờ giấc ngủ</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Ngày thường (CN → T5): Tắt đèn trước 12h, không nói chuyện. Thứ 6-7: Free style.</p>
+                    </div>
+                </div>
+
+                <!-- Luật 6 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">📢</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">06 • Báo trước</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Phải báo trước ít nhất 2 tiếng nếu không làm được việc chung (nấu ăn, dọn dẹp).</p>
+                    </div>
+                </div>
+
+                <!-- Luật 7 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">👕</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">07 • Gọn gàng</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Không vất quần áo lung tung lên giường hay sàn nhà.</p>
+                    </div>
+                </div>
+
+                <!-- Luật 8 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">📅</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">08 • Họp buồng</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Mỗi tháng họp buồng 1 lần để ăn uống và cập nhật tình hình thế giới.</p>
+                    </div>
+                </div>
+
+                <!-- Luật 9 -->
+                <div class="rule-card rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">👥</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-emerald-400">09 • Dẫn khách</h3>
+                        <p class="text-zinc-400 text-sm leading-relaxed">Phải hỏi ý kiến cả buồng trước khi dẫn "người lạ" về nhà.</p>
+                    </div>
+                </div>
+
+                <!-- Luật 10 -->
+                <div class="rule-card bg-amber-500/10 border border-amber-500/20 rounded-3xl p-8 flex gap-6">
+                    <span class="text-5xl flex-shrink-0 opacity-80">✨</span>
+                    <div>
+                        <h3 class="font-black text-xl mb-3 text-amber-400 flex items-center gap-2">
+                            10 • Gấp chăn màn
+                            <span class="text-[9px] px-2 py-0.5 bg-amber-500/20 rounded uppercase tracking-widest font-black border border-amber-500/20">Critical</span>
+                        </h3>
+                        <p class="text-zinc-300 text-sm leading-relaxed font-medium">Bắt buộc phải gấp chăn gọn gàng sau khi thức dậy. Không được để lộn xộn.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BẢNG PHẠT -->
+    <section id="phat" class="py-24 bg-zinc-900/50 relative overflow-hidden">
+        <div class="max-w-5xl mx-auto px-5 relative z-10">
+            <h2 class="title-font text-5xl font-black text-center mb-16">💰 Định Mức Phạt</h2>
+            <div class="bg-zinc-950 border border-white/5 rounded-[40px] p-10 md:p-16 shadow-3xl">
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-12 text-center mb-16">
+                    <div class="space-y-4">
+                        <div class="text-5xl">1️⃣</div>
+                        <div class="text-3xl font-black text-emerald-400">20k</div>
+                        <p class="text-xs font-black uppercase text-zinc-500 tracking-widest">Lần thứ nhất</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="text-5xl">2️⃣</div>
+                        <div class="text-3xl font-black text-amber-400">50k</div>
+                        <p class="text-xs font-black uppercase text-zinc-500 tracking-widest">Lần thứ hai</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="text-5xl">3️⃣</div>
+                        <div class="text-3xl font-black text-rose-400">100k</div>
+                        <p class="text-xs font-black uppercase text-zinc-500 tracking-widest">Lần thứ ba</p>
+                    </div>
+                    <div class="space-y-4">
+                        <div class="text-5xl">🔥</div>
+                        <div class="text-3xl font-black text-white italic">X2 LẦN</div>
+                        <p class="text-xs font-black uppercase text-zinc-500 tracking-widest">Tái phạm sau đó</p>
+                    </div>
+                </div>
+
+                <div class="max-w-xl mx-auto">
+                    <label class="block text-center text-xs font-black uppercase text-zinc-500 tracking-widest mb-6">Mô phỏng mức phạt của bạn</label>
+                    <div class="flex gap-4 p-2 bg-zinc-900 rounded-3xl border border-white/5">
+                        <input id="count" type="number" value="1" min="1" 
+                               class="w-32 bg-transparent text-center text-5xl font-black py-4 focus:outline-none text-white">
+                        <button onclick="calculatePenalty()" 
+                                class="flex-1 bg-emerald-500 hover:bg-emerald-400 text-zinc-950 font-black text-lg rounded-2xl transition-all shadow-xl shadow-emerald-500/20 active:scale-95 uppercase tracking-widest">
+                            TÍNH PHẠT
+                        </button>
+                    </div>
+                    <div id="result" class="mt-10 text-center text-6xl font-black text-emerald-400 hidden animate-bounce"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-16 text-center border-t border-white/5 bg-zinc-950">
+        <div class="max-w-5xl mx-auto px-5">
+            <div class="text-4xl mb-6">🍳</div>
+            <p class="text-zinc-500 text-sm font-medium">Buồng Vui Vẻ • Hiến Pháp Chính Thức • 2026</p>
+            <p class="text-[10px] text-zinc-700 uppercase tracking-widest font-black mt-4">Powered by Pencake System</p>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden')
+        }
+
+        function calculatePenalty() {
+            const count = parseInt(document.getElementById('count').value) || 1
+            let amount = count === 1 ? 20000 : 
+                        count === 2 ? 50000 : 
+                        count === 3 ? 100000 : 
+                        100000 * Math.pow(2, count - 3)
+            
+            const result = document.getElementById('result')
+            result.textContent = amount.toLocaleString('vi-VN') + 'đ'
+            result.classList.remove('hidden')
+        }
+
+        function launchConfetti() {
+            const colors = ['#10b981', '#fbbf24', '#c026d3', '#22d3ee']
+            for (let i = 0; i < 100; i++) {
+                setTimeout(() => {
+                    const c = document.createElement('div')
+                    c.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-20px; width:12px; height:12px; background:${colors[Math.floor(Math.random()*colors.length)]}; border-radius:2px; z-index:9999;`
+                    document.body.appendChild(c)
+                    
+                    let y = -20, rot = 0
+                    const anim = setInterval(() => {
+                        y += 8 + Math.random() * 5
+                        rot += 15
+                        c.style.top = y + 'px'
+                        c.style.transform = `rotate(${rot}deg)`
+                        if (y > window.innerHeight) {
+                            clearInterval(anim)
+                            c.remove()
+                        }
+                    }, 16)
+                }, i * 6)
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const input = document.getElementById('count')
+            if (input) input.addEventListener('input', calculatePenalty)
+        })
+    </script>
+</body>
+</html>

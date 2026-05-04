@@ -1,0 +1,134 @@
+<div class="mb-12">
+    <h2 class="text-5xl font-black tracking-tight font-serif-heading text-gradient-gold">Hồ sơ cá nhân</h2>
+    <p class="text-zinc-400 mt-2 font-medium flex items-center gap-3">
+        <span class="w-8 h-px bg-gold-500/30"></span>
+        Quản lý thông tin và <span class="text-gold-400">bản sắc kỹ thuật số</span> của bạn.
+    </p>
+</div>
+
+<div class="glass-card p-10 max-w-3xl border-white/5">
+    <form action="/personal/profile" method="POST" enctype="multipart/form-data">
+        <!-- Avatar Section -->
+        <div class="flex flex-col md:flex-row items-center gap-10 mb-10">
+            <div class="relative group">
+                <div class="w-32 h-32 rounded-3xl overflow-hidden border-2 border-gold-500/30 p-1 bg-obsidian-500 shadow-[0_20px_50px_rgba(201,169,110,0.15)]">
+                    <% if (user.avatar && user.avatar.startsWith('http')) { %>
+                        <img id="avatarPreview" src="<%= user.avatar %>" class="w-full h-full object-cover rounded-2xl">
+                    <% } else { %>
+                        <img id="avatarPreview" src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user.fullName) %>&background=C9A96E&color=000" class="w-full h-full object-cover rounded-2xl">
+                    <% } %>
+                </div>
+                <div class="absolute -bottom-2 -right-2 w-10 h-10 bg-gold-500 text-obsidian-500 rounded-xl flex items-center justify-center shadow-xl cursor-pointer hover:scale-110 transition-all z-10" onclick="document.getElementById('avatarInput').click()">
+                    <i class="fa-solid fa-camera text-sm"></i>
+                </div>
+            </div>
+            <div class="text-center md:text-left">
+                <h3 class="text-xl font-black text-white mb-2">Ảnh đại diện</h3>
+                <p class="text-xs text-zinc-500 mb-4 leading-relaxed max-w-[250px]">Tải lên hình ảnh cá nhân để nhận diện tốt hơn trong cộng đồng.</p>
+                <input type="file" id="avatarInput" name="avatar" accept="image/*" class="hidden" onchange="previewImage(event)">
+                <button type="button" onclick="document.getElementById('avatarInput').click()" class="px-6 py-2.5 bg-white/5 hover:bg-white/10 text-[10px] font-black text-gold-500 rounded-xl transition-all border border-gold-500/20 uppercase tracking-widest">
+                    Thay đổi ảnh
+                </button>
+            </div>
+        </div>
+
+        <div class="h-px w-full bg-white/5 mb-8"></div>
+
+        <% if (typeof success !== 'undefined' || (typeof req !== 'undefined' && req.query && req.query.success)) { %>
+            <div class="mb-10 p-5 bg-gold-500/5 border border-gold-500/20 rounded-2xl flex items-center gap-4 text-gold-500 shadow-[0_10px_30px_rgba(201,169,110,0.05)]">
+                <div class="w-10 h-10 bg-gold-500 text-obsidian-500 rounded-xl flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-check"></i>
+                </div>
+                <div>
+                    <p class="text-sm font-black uppercase tracking-widest">Tuyệt vời!</p>
+                    <p class="text-xs font-medium text-gold-500/60">Thông tin cá nhân của bạn đã được lưu lại.</p>
+                </div>
+            </div>
+        <% } %>
+
+        <!-- Info Section -->
+        <div class="space-y-10">
+            <div>
+                <label class="block text-[10px] font-black text-zinc-500 mb-4 uppercase tracking-[0.2em]">Họ và tên định danh</label>
+                <div class="relative">
+                    <span class="absolute left-5 top-1/2 -translate-y-1/2 text-gold-500/50 text-xl"><i class="fa-regular fa-user"></i></span>
+                    <input type="text" name="fullName" value="<%= user.fullName %>" required
+                        class="w-full bg-white/[0.03] border border-white/10 rounded-2xl pl-16 pr-6 py-5 text-white font-bold focus:outline-none focus:border-gold-500/50 transition-all text-xl shadow-inner">
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <label class="block text-sm font-black text-zinc-400 mb-3 uppercase tracking-widest text-[11px]">Địa chỉ Email</label>
+                    <input type="email" value="<%= user.email %>" disabled
+                        class="w-full bg-zinc-950/50 border border-white/5 rounded-2xl px-5 py-4 text-zinc-500 cursor-not-allowed font-medium">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-black text-zinc-400 mb-3 uppercase tracking-widest text-[11px]">Cấp bậc tài khoản</label>
+                    <input type="text" value="<%= user.role === 'super_admin' ? 'QUẢN TRỊ VIÊN' : 'THÀNH VIÊN' %>" disabled
+                        class="w-full bg-zinc-950/50 border border-white/5 rounded-2xl px-5 py-4 text-zinc-500 cursor-not-allowed font-bold tracking-widest">
+                </div>
+            </div>
+
+            <div class="h-px w-full bg-white/5"></div>
+
+            <!-- QR Code Management -->
+            <div>
+                <label class="block text-[10px] font-black text-zinc-500 mb-5 uppercase tracking-[0.2em]">Cổng thanh toán cá nhân (QR Code)</label>
+                <div class="flex flex-col md:flex-row items-center gap-10 p-10 bg-white/[0.02] rounded-[32px] border border-white/5 relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-gold-500/5 blur-[80px] rounded-full"></div>
+                    <div class="relative shrink-0">
+                        <div class="w-52 h-52 bg-white rounded-3xl overflow-hidden border-4 border-gold-500/20 p-2 shadow-[0_20px_50px_rgba(0,0,0,0.4)] group-hover:border-gold-500/40 transition-all">
+                            <% if (user.qrCode) { %>
+                                <img id="qrPreview" src="<%= user.qrCode %>" class="w-full h-full object-contain">
+                            <% } else { %>
+                                <div id="qrPlaceholder" class="w-full h-full flex flex-col items-center justify-center text-zinc-400 bg-zinc-50">
+                                    <i class="fa-solid fa-qrcode text-6xl opacity-20"></i>
+                                    <span class="text-[9px] font-black uppercase tracking-widest mt-4">Chưa có mã QR</span>
+                                </div>
+                                <img id="qrPreview" class="w-full h-full object-contain hidden">
+                            <% } %>
+                        </div>
+                        <button type="button" onclick="document.getElementById('qrInput').click()" 
+                            class="absolute -bottom-4 -right-4 w-14 h-14 bg-gold-500 text-obsidian-500 rounded-2xl flex items-center justify-center shadow-2xl hover:scale-110 transition-all z-10 border-4 border-obsidian-500">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                        </button>
+                    </div>
+                    <div class="flex-1 text-center md:text-left">
+                        <h4 class="text-2xl font-black text-white mb-3 font-serif-heading">Nhận tiền nhanh chóng</h4>
+                        <p class="text-sm text-zinc-500 leading-relaxed mb-8 font-medium">Tải lên mã QR ngân hàng hoặc ví điện tử để các thành viên khác có thể tất toán nợ nần chỉ với một lần quét.</p>
+                        <input type="file" id="qrInput" name="qrCode" accept="image/*" class="hidden" onchange="previewQR(event)">
+                        <button type="button" onclick="document.getElementById('qrInput').click()" 
+                            class="px-8 py-3 bg-white/5 hover:bg-white/10 text-[10px] font-black text-gold-500 rounded-xl transition-all border border-gold-500/20 uppercase tracking-[0.2em]">
+                            Cập nhật mã QR của bạn
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-14 pt-10 border-t border-white/5">
+            <button type="submit" class="btn-primary-glow w-full md:w-auto md:px-12 py-5 rounded-2xl text-base">
+                Xác nhận lưu thay đổi
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    function previewQR(event) {
+        const reader = new FileReader();
+        const preview = document.getElementById('qrPreview');
+        const placeholder = document.getElementById('qrPlaceholder');
+        
+        reader.onload = function() {
+            preview.src = reader.result;
+            preview.classList.remove('hidden');
+            if (placeholder) placeholder.classList.add('hidden');
+        }
+        if(event.target.files[0]) {
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    }
+</script>

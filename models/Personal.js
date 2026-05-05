@@ -28,6 +28,16 @@ const noteSchema = new mongoose.Schema({
     color: { type: String, default: '#ffffff' }
 }, { timestamps: true });
 
+// Personal Income
+const incomeSchema = new mongoose.Schema({
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    title: { type: String, required: true },
+    amount: { type: Number, required: true },
+    source: { type: String, default: 'Khác' },
+    date: { type: Date, default: Date.now },
+    notes: { type: String }
+}, { timestamps: true });
+
 // Debt Management
 const debtSchema = new mongoose.Schema({
     creditorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Người cho vay
@@ -43,5 +53,6 @@ module.exports = {
     Task: mongoose.model('Task', taskSchema),
     Expense: mongoose.model('Expense', expenseSchema),
     Note: mongoose.model('Note', noteSchema),
-    Debt: mongoose.model('Debt', debtSchema)
+    Debt: mongoose.model('Debt', debtSchema),
+    Income: mongoose.model('Income', incomeSchema)
 };

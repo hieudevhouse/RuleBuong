@@ -10,6 +10,8 @@ router.post('/note/create', personalController.createNote);
 router.get('/expenses', personalController.getExpenses);
 router.post('/expenses/create', personalController.createExpense);
 router.post('/expenses/delete/:id', personalController.deleteExpense);
+router.post('/income/create', personalController.createIncome);
+router.post('/income/delete/:id', personalController.deleteIncome);
 router.post('/debt/create', personalController.createDebt);
 router.post('/debt/approve/:debtId', personalController.approveDebt);
 router.post('/debt/delete/:debtId', personalController.deleteDebt);

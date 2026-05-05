@@ -1,4 +1,4 @@
-const { Expense, Note, Debt } = require('../models/Personal');
+const { Expense, Note, Debt, Income } = require('../models/Personal');
 const Schedule = require('../models/Schedule');
 const User = require('../models/User');
 const moment = require('moment');
@@ -140,6 +140,7 @@ exports.getExpenses = async (req, res) => {
     try {
         const user = req.user;
         const expenses = await Expense.find({ userId: user._id }).sort({ date: -1 });
+        const incomes = await Income.find({ userId: user._id }).sort({ date: -1 });
         
         // Debts and Receivables
         const myDebts = await Debt.find({ debtorId: user._id, status: 'approved' })
@@ -162,7 +163,7 @@ exports.getExpenses = async (req, res) => {
         // All users for the creation modal
         const allUsers = await User.find({ _id: { $ne: user._id } }, 'fullName email');
 
-        // Calculations
+        // Calculations for Expenses
         const totalAmount = expenses.reduce((sum, exp) => sum + exp.amount, 0);
         const monthlyAmount = expenses
             .filter(exp => moment(exp.date).isSame(moment(), 'month'))
@@ -171,10 +172,20 @@ exports.getExpenses = async (req, res) => {
             .filter(exp => moment(exp.date).isSame(moment(), 'day'))
             .reduce((sum, exp) => sum + exp.amount, 0);
 
+        // Calculations for Income
+        const totalIncomeAmount = incomes.reduce((sum, inc) => sum + inc.amount, 0);
+        const monthlyIncomeAmount = incomes
+            .filter(inc => moment(inc.date).isSame(moment(), 'month'))
+            .reduce((sum, inc) => sum + inc.amount, 0);
+        
+        // Calculations for Balance
+        const currentBalance = totalIncomeAmount - totalAmount;
+
         res.render('personal/expenses', {
-            title: 'Quản lý chi tiêu - Pencake',
+            title: 'Quản lý tài chính - Pencake',
             user,
             expenses,
+            incomes,
             myDebts,
             othersOweMe,
             pendingApprovals,
@@ -183,7 +194,10 @@ exports.getExpenses = async (req, res) => {
             stats: {
                 total: totalAmount,
                 monthly: monthlyAmount,
-                daily: dailyAmount
+                daily: dailyAmount,
+                totalIncome: totalIncomeAmount,
+                monthlyIncome: monthlyIncomeAmount,
+                balance: currentBalance
             },
             moment
         });
@@ -259,5 +273,35 @@ exports.deleteExpense = async (req, res) => {
     } catch (err) {
         console.error(err);
         res.status(500).send('Lỗi xóa chi tiêu');
+    }
+};
+
+exports.createIncome = async (req, res) => {
+    try {
+        const { title, amount, source, date, notes } = req.body;
+        const newIncome = new Income({
+            userId: req.user._id,
+            title,
+            amount: parseFloat(amount.toString().replace(/\./g, '')),
+            source,
+            date: date ? new Date(date) : new Date(),
+            notes
+        });
+        await newIncome.save();
+        res.redirect('/personal/expenses');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Lỗi thêm thu nhập');
+    }
+};
+
+exports.deleteIncome = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Income.findOneAndDelete({ _id: id, userId: req.user._id });
+        res.redirect('/personal/expenses');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Lỗi xóa thu nhập');
     }
 };
